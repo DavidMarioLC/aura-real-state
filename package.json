@@ -1,0 +1,18 @@
+{
+  "name": "aura-real-state",
+  "private": true,
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "db:up": "docker compose up -d db",
+    "db:down": "docker compose down"
+  },
+  "devDependencies": {
+    "turbo": "^2.3.0"
+  },
+  "packageManager": "pnpm@11.12.0",
+  "engines": {
+    "node": ">=20"
+  }
+}

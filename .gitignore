@@ -1,0 +1,13 @@
+node_modules
+.turbo
+dist
+build
+.next
+.env
+.env.*
+!.env.example
+.DS_Store
+*.log
+apps/cms/.tmp
+apps/cms/.cache
+apps/cms/public/uploads
