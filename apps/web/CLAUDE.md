@@ -28,22 +28,8 @@ From the monorepo root: `pnpm dev` / `pnpm build` / `pnpm lint` run the equivale
 - **Linting/formatting**: Biome (not ESLint/Prettier) — config in `biome.json`, 2-space indent, import organization on save/check, `next`/`react` rule domains enabled.
 - **Path alias**: `@/*` maps to `apps/web/*` (see `tsconfig.json`).
 
-## Commit Conventions
-
-We use Conventional Commits. Format:
-`<type>(<optional scope>): <short imperative description>`
-
-Allowed types: feat, fix, docs, style, refactor, perf, test, chore, build, ci
-
-Rules:
-- Description in lowercase, no trailing period, max 72 characters
-- Body (optional) explains "why", not "what"
-- If the change breaks compatibility, add a `BREAKING CHANGE:` footer
-- One commit = one coherent logical change (don't mix features with fixes)
-
-Examples:
-feat(auth): add Google OAuth login
-fix(cart): correct total calculation with discounts
+## Commits
+Always delegate commit creation to the `committer` subagent — do not write commit messages directly in the main session.
 
 ## Skills
 
