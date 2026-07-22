@@ -40,7 +40,12 @@ const config = ({ env }: Core.Config.Shared.ConfigParams): Core.Config.Plugin =>
         api_secret: env('CLOUDINARY_SECRET'),
       },
       actionOptions: {
-        upload: {},
+        upload: {
+          folder: env('CLOUDINARY_FOLDER', 'projects/aura-real-state'),
+        },
+        uploadStream: {
+          folder: env('CLOUDINARY_FOLDER', 'projects/aura-real-state'),
+        },
         delete: {},
       },
       security: {
