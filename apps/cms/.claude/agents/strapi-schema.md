@@ -104,7 +104,7 @@ Reference a component from a content-type or another component's attributes as:
 ## Attribute type reference
 
 - Scalars: `string`, `text`, `richtext`, `email`, `password`, `boolean`, `date`, `datetime`, `time`, `json`, `uid` (optionally `"targetField": "<attr>"`)
-- `number`: add `"format": "integer" | "biginteger" | "float" | "decimal"`
+- Numbers: `integer`, `biginteger`, `float`, `decimal` — each is its own `type`, there is no `"number"` type with a `format` key
 - `enumeration`: `"enum": ["a", "b", "c"]`
 - `media`: `"multiple": true|false`, optionally `"allowedTypes": ["images", "files", "videos", "audios"]`
 - `component`: `"component": "category.name"`, `"repeatable": true|false`

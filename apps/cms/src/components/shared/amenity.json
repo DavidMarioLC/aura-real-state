@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_shared_amenities",
+  "info": {
+    "displayName": "Amenity",
+    "icon": "star",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "label": { "type": "string" }
+  }
+}

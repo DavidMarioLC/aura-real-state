@@ -1,0 +1,55 @@
+{
+  "kind": "collectionType",
+  "collectionName": "properties",
+  "info": {
+    "singularName": "property",
+    "pluralName": "properties",
+    "displayName": "Property",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": { "localized": true }
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "pluginOptions": { "i18n": { "localized": true } }
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "pluginOptions": { "i18n": { "localized": true } }
+    },
+    "description": {
+      "type": "text",
+      "pluginOptions": { "i18n": { "localized": true } }
+    },
+    "amenities": {
+      "type": "component",
+      "component": "shared.amenity",
+      "repeatable": true,
+      "pluginOptions": { "i18n": { "localized": true } }
+    },
+    "city": { "type": "string" },
+    "type": {
+      "type": "enumeration",
+      "enum": ["casa", "villa", "departamento", "penthouse"]
+    },
+    "price": { "type": "decimal" },
+    "beds": { "type": "integer" },
+    "baths": { "type": "integer" },
+    "sqm": { "type": "decimal" },
+    "images": { "type": "media", "multiple": true, "allowedTypes": ["images"] },
+    "featured": { "type": "boolean", "default": false },
+    "agent": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::agent.agent",
+      "inversedBy": "properties"
+    }
+  }
+}

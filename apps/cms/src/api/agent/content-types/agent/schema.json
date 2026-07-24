@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "agents",
+  "info": {
+    "singularName": "agent",
+    "pluralName": "agents",
+    "displayName": "Agent",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": { "localized": true }
+  },
+  "attributes": {
+    "name": { "type": "string", "required": true },
+    "role": {
+      "type": "string",
+      "pluginOptions": { "i18n": { "localized": true } }
+    },
+    "bio": {
+      "type": "text",
+      "pluginOptions": { "i18n": { "localized": true } }
+    },
+    "email": { "type": "email", "required": true },
+    "photo": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "properties": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::property.property",
+      "mappedBy": "agent"
+    }
+  }
+}
