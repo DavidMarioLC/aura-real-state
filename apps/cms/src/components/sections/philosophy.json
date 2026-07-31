@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_sections_philosophies",
+  "info": {
+    "displayName": "Philosophy",
+    "icon": "book",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": { "type": "string" },
+    "title": { "type": "string", "required": true },
+    "body": { "type": "text" },
+    "link": { "type": "component", "component": "shared.link", "repeatable": false },
+    "image": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "imageAlt": { "type": "string" }
+  }
+}

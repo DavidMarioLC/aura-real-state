@@ -1,0 +1,55 @@
+{
+  "kind": "singleType",
+  "collectionName": "home_pages",
+  "info": {
+    "singularName": "home-page",
+    "pluralName": "home-pages",
+    "displayName": "Home Page",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": { "localized": true }
+  },
+  "attributes": {
+    "hero": {
+      "type": "component",
+      "component": "sections.hero",
+      "repeatable": false,
+      "required": true,
+      "pluginOptions": { "i18n": { "localized": true } }
+    },
+    "philosophy": {
+      "type": "component",
+      "component": "sections.philosophy",
+      "repeatable": false,
+      "pluginOptions": { "i18n": { "localized": true } }
+    },
+    "stats": {
+      "type": "component",
+      "component": "sections.stat",
+      "repeatable": true,
+      "pluginOptions": { "i18n": { "localized": true } }
+    },
+    "featuredHeading": {
+      "type": "component",
+      "component": "sections.section-heading",
+      "repeatable": false,
+      "pluginOptions": { "i18n": { "localized": true } }
+    },
+    "featuredProperties": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::property.property",
+      "pluginOptions": { "i18n": { "localized": false } }
+    },
+    "cta": {
+      "type": "component",
+      "component": "sections.cta",
+      "repeatable": false,
+      "pluginOptions": { "i18n": { "localized": true } }
+    }
+  }
+}

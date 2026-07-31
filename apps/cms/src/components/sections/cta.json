@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_sections_ctas",
+  "info": {
+    "displayName": "Cta",
+    "icon": "message",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "quote": { "type": "text", "required": true },
+    "link": { "type": "component", "component": "shared.link", "repeatable": false }
+  }
+}

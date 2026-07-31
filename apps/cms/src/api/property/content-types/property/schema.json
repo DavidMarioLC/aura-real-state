@@ -44,7 +44,6 @@
     "baths": { "type": "integer" },
     "sqm": { "type": "decimal" },
     "images": { "type": "media", "multiple": true, "allowedTypes": ["images"] },
-    "featured": { "type": "boolean", "default": false },
     "agent": {
       "type": "relation",
       "relation": "manyToOne",

@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_sections_section_headings",
+  "info": {
+    "displayName": "Section Heading",
+    "icon": "apps",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": { "type": "string" },
+    "title": { "type": "string", "required": true },
+    "link": { "type": "component", "component": "shared.link", "repeatable": false }
+  }
+}

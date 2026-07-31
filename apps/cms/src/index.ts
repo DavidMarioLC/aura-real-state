@@ -36,6 +36,7 @@ const PUBLIC_ACTIONS = [
   'api::property.property.findOne',
   'api::agent.agent.find',
   'api::agent.agent.findOne',
+  'api::home-page.home-page.find',
 ];
 
 const ensurePublicPermissions = async (strapi: Core.Strapi) => {
