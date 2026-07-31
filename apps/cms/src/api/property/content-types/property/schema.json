@@ -37,7 +37,7 @@
     "city": { "type": "string" },
     "type": {
       "type": "enumeration",
-      "enum": ["casa", "villa", "departamento", "penthouse"]
+      "enum": ["house", "villa", "apartment", "penthouse"]
     },
     "price": { "type": "decimal" },
     "beds": { "type": "integer" },

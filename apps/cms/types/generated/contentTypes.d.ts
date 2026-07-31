@@ -549,7 +549,7 @@ export interface ApiPropertyProperty extends Struct.CollectionTypeSchema {
         };
       }>;
     type: Schema.Attribute.Enumeration<
-      ['casa', 'villa', 'departamento', 'penthouse']
+      ['house', 'villa', 'apartment', 'penthouse']
     >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
