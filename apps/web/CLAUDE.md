@@ -29,7 +29,7 @@ From the monorepo root: `pnpm dev` / `pnpm build` / `pnpm lint` run the equivale
 - **Path alias**: `@/*` maps to `apps/web/*` (see `tsconfig.json`).
 
 ## Commits
-Always delegate commit creation to the `committer` subagent — do not write commit messages directly in the main session.
+Follow the repo-wide `commit` skill (`.claude/skills/commit/SKILL.md` at the monorepo root) when creating commits.
 
 ## Skills
 
