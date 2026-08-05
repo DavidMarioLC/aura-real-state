@@ -24,7 +24,15 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      // The cms app pins @types/react 18, which pnpm hoists into
+      // node_modules/.pnpm/node_modules — dependencies without their own copy
+      // (next-intl) resolve it and their ReactNode stops matching ours.
+      // Pinning both to this app's React 19 types keeps one copy per program.
+      "react": ["./node_modules/@types/react"],
+      "react/*": ["./node_modules/@types/react/*"],
+      "react-dom": ["./node_modules/@types/react-dom"],
+      "react-dom/*": ["./node_modules/@types/react-dom/*"]
     }
   },
   "include": [
