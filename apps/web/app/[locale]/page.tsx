@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { setRequestLocale } from "next-intl/server";
 import { getHomeContent } from "@/cms/home";
+import { getProperties } from "@/cms/properties";
 import { toLocale } from "@/i18n/params";
-import { getProperties } from "../data";
 import ContentLink from "./components/ContentLink";
 import PropertyCard from "./components/PropertyCard";
 
@@ -17,9 +17,9 @@ export default async function Home({
 
   const { hero, philosophy, stats, featuredHeading, cta } =
     await getHomeContent(locale);
-  // Still static: the featured cards move to the CMS with the rest of the
-  // property routes, so their links keep matching /propiedades/[id].
-  const featured = getProperties(locale).slice(0, 3);
+  // The editorial selection lives in Strapi as `homePage.featuredProperties`;
+  // until that relation is read here, the first three entries stand in for it.
+  const featured = (await getProperties(locale)).slice(0, 3);
 
   return (
     <div>
@@ -139,7 +139,7 @@ export default async function Home({
         )}
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {featured.map((p) => (
-            <PropertyCard key={p.id} property={p} />
+            <PropertyCard key={p.slug} property={p} />
           ))}
         </div>
       </div>

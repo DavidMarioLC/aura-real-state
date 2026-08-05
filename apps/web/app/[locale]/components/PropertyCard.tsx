@@ -1,7 +1,8 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import type { PropertySummary } from "@/cms/properties";
 import { Link } from "@/i18n/navigation";
-import { fmtPrice, type Property } from "../../data";
+import { fmtPrice } from "../../data";
 
 export default function PropertyCard({
   property,
@@ -9,21 +10,22 @@ export default function PropertyCard({
   titleSize = "text-2xl",
   showSpecs = false,
 }: {
-  property: Property;
+  property: PropertySummary;
   imageHeight?: number;
   titleSize?: string;
   showSpecs?: boolean;
 }) {
   const t = useTranslations("PropertyCard");
+  const tType = useTranslations("PropertyType");
 
   return (
-    <Link href={`/propiedades/${property.id}`} className="flex flex-col">
+    <Link href={`/propiedades/${property.slug}`} className="flex flex-col">
       <div
         className="relative w-full overflow-hidden bg-[#e8dfce]"
         style={{ height: imageHeight }}
       >
         <Image
-          src="/placeholder.svg"
+          src={property.image.url}
           alt={property.title}
           fill
           className="object-cover"
@@ -32,7 +34,7 @@ export default function PropertyCard({
       </div>
       <div className="pt-5 pr-1 pb-0 pl-1">
         <p className="mb-2 text-xs font-bold tracking-[1px] text-[#a9834f] uppercase">
-          {property.type} · {property.city}
+          {tType(property.type)} · {property.city}
         </p>
         <h3
           className={`mb-2 font-[family-name:var(--font-cormorant)] font-medium ${titleSize}`}

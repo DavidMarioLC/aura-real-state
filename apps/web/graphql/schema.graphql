@@ -876,15 +876,15 @@ input PropertyInput {
 type Property {
   documentId: ID!
   title: String!
-  slug: String
-  description: String
+  slug: String!
+  description: String!
   amenities(filters: ComponentSharedAmenityFiltersInput, pagination: PaginationArg = {  }, sort: [String] = []): [ComponentSharedAmenity]
-  city: String
-  type: ENUM_PROPERTY_TYPE
-  price: Float
-  beds: Int
-  baths: Int
-  sqm: Float
+  city: String!
+  type: ENUM_PROPERTY_TYPE!
+  price: Float!
+  beds: Int!
+  baths: Int!
+  sqm: Float!
   images_connection(filters: UploadFileFiltersInput, pagination: PaginationArg = {  }, sort: [String] = []): UploadFileRelationResponseCollection
   images(filters: UploadFileFiltersInput, pagination: PaginationArg = {  }, sort: [String] = []): [UploadFile]!
   agent: Agent

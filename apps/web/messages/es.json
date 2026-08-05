@@ -55,9 +55,7 @@
   "PropertyDetail": {
     "back": "← Volver a propiedades",
     "mainImageAlt": "Fachada o interior de {title}",
-    "interiorImageAlt": "Detalle interior de {title}",
-    "exteriorImageAlt": "Exterior y jardín de {title}",
-    "extraImageAlt": "Vista adicional de {title}",
+    "galleryImageAlt": "Vista {index} de {title}",
     "beds": "Habitaciones",
     "baths": "Baños",
     "area": "Superficie",
@@ -67,6 +65,12 @@
     "agentPhotoAlt": "Foto de {name}",
     "agentCta": "Solicitar información",
     "relatedHeading": "Propiedades relacionadas"
+  },
+  "PropertyType": {
+    "house": "Casa",
+    "villa": "Villa",
+    "apartment": "Departamento",
+    "penthouse": "Penthouse"
   },
   "Team": {
     "eyebrow": "Quiénes somos",

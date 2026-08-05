@@ -1,6 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getProperties } from "@/cms/properties";
 import { toLocale } from "@/i18n/params";
-import { getProperties } from "../../data";
 import PropertiesBrowser from "./PropertiesBrowser";
 
 export default async function PropertiesPage({
@@ -13,6 +13,7 @@ export default async function PropertiesPage({
   setRequestLocale(locale);
 
   const t = await getTranslations("Properties");
+  const properties = await getProperties(locale);
 
   return (
     <div>
@@ -26,7 +27,7 @@ export default async function PropertiesPage({
         <p className="max-w-[600px] text-base text-[#4a473f]">{t("intro")}</p>
       </div>
 
-      <PropertiesBrowser properties={getProperties(locale)} />
+      <PropertiesBrowser properties={properties} />
     </div>
   );
 }

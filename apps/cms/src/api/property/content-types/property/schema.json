@@ -22,10 +22,12 @@
     "slug": {
       "type": "uid",
       "targetField": "title",
+      "required": true,
       "pluginOptions": { "i18n": { "localized": true } }
     },
     "description": {
       "type": "text",
+      "required": true,
       "pluginOptions": { "i18n": { "localized": true } }
     },
     "amenities": {
@@ -34,16 +36,43 @@
       "repeatable": true,
       "pluginOptions": { "i18n": { "localized": true } }
     },
-    "city": { "type": "string" },
+    "city": {
+      "type": "string",
+      "required": true,
+      "pluginOptions": { "i18n": { "localized": false } }
+    },
     "type": {
       "type": "enumeration",
-      "enum": ["house", "villa", "apartment", "penthouse"]
+      "enum": ["house", "villa", "apartment", "penthouse"],
+      "required": true,
+      "pluginOptions": { "i18n": { "localized": false } }
     },
-    "price": { "type": "decimal" },
-    "beds": { "type": "integer" },
-    "baths": { "type": "integer" },
-    "sqm": { "type": "decimal" },
-    "images": { "type": "media", "multiple": true, "allowedTypes": ["images"] },
+    "price": {
+      "type": "decimal",
+      "required": true,
+      "pluginOptions": { "i18n": { "localized": false } }
+    },
+    "beds": {
+      "type": "integer",
+      "required": true,
+      "pluginOptions": { "i18n": { "localized": false } }
+    },
+    "baths": {
+      "type": "integer",
+      "required": true,
+      "pluginOptions": { "i18n": { "localized": false } }
+    },
+    "sqm": {
+      "type": "decimal",
+      "required": true,
+      "pluginOptions": { "i18n": { "localized": false } }
+    },
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": ["images"],
+      "pluginOptions": { "i18n": { "localized": false } }
+    },
     "agent": {
       "type": "relation",
       "relation": "manyToOne",

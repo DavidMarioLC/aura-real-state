@@ -2,40 +2,45 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import {
+  getProperties,
+  getPropertyBySlug,
+  getPropertySlugs,
+} from "@/cms/properties";
 import { alternatesFor } from "@/i18n/metadata";
 import { Link } from "@/i18n/navigation";
 import { toLocale } from "@/i18n/params";
 import { routing } from "@/i18n/routing";
-import {
-  fmtPrice,
-  getAgent,
-  getProperties,
-  getPropertyById,
-  PROPERTY_IDS,
-} from "../../../data";
+import { fmtPrice } from "../../../data";
 import PropertyCard from "../../components/PropertyCard";
 
-export function generateStaticParams() {
-  return routing.locales.flatMap((locale) =>
-    PROPERTY_IDS.map((id) => ({ locale, id })),
+/** Slugs are translated, so each locale contributes its own list of pages. */
+export async function generateStaticParams() {
+  const perLocale = await Promise.all(
+    routing.locales.map(async (locale) =>
+      (await getPropertySlugs(locale)).map((slug) => ({ locale, slug })),
+    ),
   );
+
+  return perLocale.flat();
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ locale: string; id: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
-  const { locale: rawLocale, id } = await params;
+  const { locale: rawLocale, slug } = await params;
   const locale = toLocale(rawLocale);
-  const property = getPropertyById(id, locale);
+  const property = await getPropertyBySlug(slug, locale);
   if (!property) return {};
 
   const t = await getTranslations({ locale, namespace: "Metadata.property" });
+  const tType = await getTranslations({ locale, namespace: "PropertyType" });
   const values = { title: property.title, city: property.city };
 
   const specs = t("specs", {
-    type: property.type,
+    type: tType(property.type),
     beds: property.beds,
     baths: property.baths,
     sqm: property.sqm,
@@ -48,14 +53,20 @@ export async function generateMetadata({
       : property.description;
   const description = `${specs} ${teaser}`;
 
+  // The same document sits under a different slug in every locale, so hreflang
+  // is built from the map rather than from this locale's pathname.
+  const pathnames = Object.fromEntries(
+    Object.entries(property.slugs).map(([l, s]) => [l, `/propiedades/${s}`]),
+  );
+
   return {
     title: t("title", values),
     description,
-    alternates: alternatesFor(`/propiedades/${property.id}`, locale),
+    alternates: alternatesFor(pathnames, locale),
     openGraph: {
       title: t("ogTitle", values),
       description,
-      url: `/${locale}/propiedades/${property.id}`,
+      url: `/${locale}/propiedades/${property.slug}`,
     },
   };
 }
@@ -63,19 +74,23 @@ export async function generateMetadata({
 export default async function PropertyDetailPage({
   params,
 }: {
-  params: Promise<{ locale: string; id: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }) {
-  const { locale: rawLocale, id } = await params;
+  const { locale: rawLocale, slug } = await params;
   const locale = toLocale(rawLocale);
   setRequestLocale(locale);
 
-  const property = getPropertyById(id, locale);
+  const property = await getPropertyBySlug(slug, locale);
   if (!property) notFound();
 
   const t = await getTranslations("PropertyDetail");
-  const agent = getAgent(property, locale);
-  const related = getProperties(locale)
-    .filter((p) => p.id !== property.id)
+  const tType = await getTranslations("PropertyType");
+  const { agent } = property;
+  // `property.image` is the first image already, or the placeholder when the
+  // entry has none — the gallery beside it is whatever else was uploaded.
+  const gallery = property.images.slice(1, 4);
+  const related = (await getProperties(locale))
+    .filter((p) => p.slug !== property.slug)
     .slice(0, 3);
 
   return (
@@ -92,48 +107,38 @@ export default async function PropertyDetailPage({
       <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-3.5 px-8 pt-6 lg:grid-cols-[2fr_1fr] lg:px-16">
         <div className="relative h-[520px] w-full">
           <Image
-            src="/placeholder.svg"
+            src={property.image.url}
             alt={t("mainImageAlt", { title: property.title })}
             fill
+            priority
             sizes="(max-width: 1024px) 100vw, 66vw"
             className="object-cover"
           />
         </div>
-        <div className="grid grid-rows-3 gap-3.5">
-          <div className="relative h-full w-full">
-            <Image
-              src="/placeholder.svg"
-              alt={t("interiorImageAlt", { title: property.title })}
-              fill
-              sizes="(max-width: 1024px) 50vw, 33vw"
-              className="object-cover"
-            />
+        {gallery.length > 0 && (
+          <div className="grid grid-rows-3 gap-3.5">
+            {gallery.map((image, index) => (
+              <div key={image.url} className="relative h-full w-full">
+                <Image
+                  src={image.url}
+                  alt={t("galleryImageAlt", {
+                    title: property.title,
+                    index: index + 2,
+                  })}
+                  fill
+                  sizes="(max-width: 1024px) 50vw, 33vw"
+                  className="object-cover"
+                />
+              </div>
+            ))}
           </div>
-          <div className="relative h-full w-full">
-            <Image
-              src="/placeholder.svg"
-              alt={t("exteriorImageAlt", { title: property.title })}
-              fill
-              sizes="(max-width: 1024px) 50vw, 33vw"
-              className="object-cover"
-            />
-          </div>
-          <div className="relative h-full w-full">
-            <Image
-              src="/placeholder.svg"
-              alt={t("extraImageAlt", { title: property.title })}
-              fill
-              sizes="(max-width: 1024px) 50vw, 33vw"
-              className="object-cover"
-            />
-          </div>
-        </div>
+        )}
       </div>
 
       <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-16 px-8 pt-14 lg:grid-cols-[2fr_1fr] lg:px-16">
         <div>
           <p className="mb-3.5 text-[13px] font-bold tracking-[2px] text-[#a9834f] uppercase">
-            {property.type} · {property.city}
+            {tType(property.type)} · {property.city}
           </p>
           <h1 className="mb-4 font-[family-name:var(--font-cormorant)] text-4xl font-medium">
             {property.title}
@@ -164,47 +169,55 @@ export default async function PropertyDetailPage({
             {property.description}
           </p>
 
-          <h2 className="mb-4 font-[family-name:var(--font-cormorant)] text-[22px] font-medium">
-            {t("amenitiesHeading")}
-          </h2>
-          <div className="mb-5 flex flex-wrap gap-3">
-            {property.amenities.map((am) => (
-              <div
-                key={am}
-                className="border border-[#201f1c]/20 px-4.5 py-2.5 text-[13px]"
-              >
-                {am}
+          {property.amenities.length > 0 && (
+            <>
+              <h2 className="mb-4 font-[family-name:var(--font-cormorant)] text-[22px] font-medium">
+                {t("amenitiesHeading")}
+              </h2>
+              <div className="mb-5 flex flex-wrap gap-3">
+                {property.amenities.map((am) => (
+                  <div
+                    key={am}
+                    className="border border-[#201f1c]/20 px-4.5 py-2.5 text-[13px]"
+                  >
+                    {am}
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </>
+          )}
         </div>
 
-        <div>
-          <div className="sticky top-[120px] bg-[#efe8db] p-8">
-            <p className="mb-4.5 text-xs font-bold tracking-[1px] text-[#a9834f] uppercase">
-              {t("agentEyebrow")}
-            </p>
-            <div className="relative mb-4 h-[76px] w-[76px] overflow-hidden rounded-full bg-[#e8dfce]">
-              <Image
-                src="/placeholder.svg"
-                alt={t("agentPhotoAlt", { name: agent.name })}
-                fill
-                sizes="76px"
-                className="object-cover"
-              />
+        {agent && (
+          <div>
+            <div className="sticky top-[120px] bg-[#efe8db] p-8">
+              <p className="mb-4.5 text-xs font-bold tracking-[1px] text-[#a9834f] uppercase">
+                {t("agentEyebrow")}
+              </p>
+              <div className="relative mb-4 h-[76px] w-[76px] overflow-hidden rounded-full bg-[#e8dfce]">
+                <Image
+                  src={agent.photo.url}
+                  alt={t("agentPhotoAlt", { name: agent.name })}
+                  fill
+                  sizes="76px"
+                  className="object-cover"
+                />
+              </div>
+              <p className="font-[family-name:var(--font-cormorant)] text-[22px] font-medium">
+                {agent.name}
+              </p>
+              {agent.role && (
+                <p className="mb-5 text-[13px] text-[#4a473f]">{agent.role}</p>
+              )}
+              <Link
+                href="/contacto"
+                className="block bg-[#201f1c] py-3.5 text-center text-sm font-bold tracking-[0.5px] text-[#f6f2ea]"
+              >
+                {t("agentCta")}
+              </Link>
             </div>
-            <p className="font-[family-name:var(--font-cormorant)] text-[22px] font-medium">
-              {agent.name}
-            </p>
-            <p className="mb-5 text-[13px] text-[#4a473f]">{agent.role}</p>
-            <Link
-              href="/contacto"
-              className="block bg-[#201f1c] py-3.5 text-center text-sm font-bold tracking-[0.5px] text-[#f6f2ea]"
-            >
-              {t("agentCta")}
-            </Link>
           </div>
-        </div>
+        )}
       </div>
 
       <div className="mx-auto max-w-[1400px] px-8 pt-28 pb-30 lg:px-16">
@@ -214,7 +227,7 @@ export default async function PropertyDetailPage({
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {related.map((p) => (
             <PropertyCard
-              key={p.id}
+              key={p.slug}
               property={p}
               imageHeight={220}
               titleSize="text-[21px]"

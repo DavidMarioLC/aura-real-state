@@ -2,7 +2,8 @@
 
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
-import { bucketOf, type Property } from "../../data";
+import type { PropertySummary } from "@/cms/properties";
+import { bucketOf } from "../../data";
 import PropertyCard from "../components/PropertyCard";
 
 const PRICE_BUCKETS = ["all", "b1", "b2", "b3", "b4"] as const;
@@ -26,9 +27,10 @@ const DEFAULT_FILTERS = {
 export default function PropertiesBrowser({
   properties,
 }: {
-  properties: Property[];
+  properties: PropertySummary[];
 }) {
   const t = useTranslations("Properties");
+  const tType = useTranslations("PropertyType");
   const [filters, setFilters] = useState(DEFAULT_FILTERS);
 
   const cities = useMemo(
@@ -79,7 +81,7 @@ export default function PropertiesBrowser({
           <option value="all">{t("typeAll")}</option>
           {types.map((ty) => (
             <option key={ty} value={ty}>
-              {ty}
+              {tType(ty)}
             </option>
           ))}
         </select>
@@ -126,7 +128,7 @@ export default function PropertiesBrowser({
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((p) => (
             <PropertyCard
-              key={p.id}
+              key={p.slug}
               property={p}
               imageHeight={260}
               titleSize="text-[23px]"

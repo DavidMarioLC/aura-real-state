@@ -19,7 +19,7 @@ From the monorepo root: `pnpm db:up` / `pnpm db:down` start/stop the local Postg
 
 ## Architecture
 
-`apps/cms` is a [Strapi 5](https://docs.strapi.io) headless CMS instance holding the content model for the Aura site: `property`, `agent` and `home-page`. It is **not** wired up as a data source for `apps/web` yet — `web` still sources content from its own static `app/data.ts`, and has no i18n routing. Connecting the two is the open work.
+`apps/cms` is a [Strapi 5](https://docs.strapi.io) headless CMS instance holding the content model for the Aura site: `property`, `agent` and `home-page`. `apps/web` reads `global`, `home-page` and `property` from it over GraphQL. What is left in `web`'s static `app/data.ts` is the team behind `/equipo`; moving that onto `agent` is the open work, along with copy for the `/propiedades`, `/equipo` and `/contacto` pages and a revalidation webhook (the front currently relies on a 1h ISR window).
 
 - **Config** (`config/*.ts`), each exporting a function of `({ env }) => ...`:
   - `database.ts` — client selected via `DATABASE_CLIENT` env var (`postgres`, `mysql`, or `sqlite`, defaults to `sqlite`); connection details for each client are read from `DATABASE_*` env vars. Postgres uses `DATABASE_URL` as a connection string with individual `DATABASE_HOST`/`PORT`/etc. as fallbacks.
@@ -38,7 +38,7 @@ From the monorepo root: `pnpm db:up` / `pnpm db:down` start/stop the local Postg
 
 All three content-types use `draftAndPublish` and are i18n-localized, with locales `en` and `es`. Per-field localization is set via `pluginOptions.i18n.localized`.
 
-- **`property`** (collection) — explicitly localized: `title`, `slug` (uid from title), `description`, and the repeatable `shared.amenity` component. `agent` is a `manyToOne` relation. The remaining fields (`city`, `type` — enum house/villa/apartment/penthouse —, `price`, `beds`, `baths`, `sqm`, `images`) carry **no explicit i18n config**; their `en`/`es` values happen to match today, but the intent isn't recorded in the schema. Set `localized` explicitly on them when you next touch this type.
+- **`property`** (collection) — explicitly localized: `title`, `slug` (uid from title), `description`, and the repeatable `shared.amenity` component. Explicitly **not** localized: `city`, `type` (enum house/villa/apartment/penthouse), `price`, `beds`, `baths`, `sqm`, `images` — one value serves both locales. `agent` is a `manyToOne` relation. Everything `apps/web` cannot render a page without is `required: true` (`title`, `slug`, `description`, `city`, `type`, `price`, `beds`, `baths`, `sqm`), which with draft & publish means it is enforced when an editor publishes; the front then reads them as non-null instead of inventing defaults. `images` and `agent` stay optional — the front falls back to a placeholder and hides the advisor card. **The type is an enum key, not a label**: `apps/web` translates it through its `PropertyType` message namespace, so don't turn it into display copy here.
 - **`agent`** (collection) — explicitly localized: `role`, `bio`. `name`, `email` and `photo` have no explicit config (same caveat). `properties` is the `oneToMany` inverse of `property.agent`.
 
 Be explicit on every new field rather than relying on defaults — it's the difference between a decision and an accident.
