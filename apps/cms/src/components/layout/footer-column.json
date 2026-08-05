@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_layout_footer_columns",
+  "info": {
+    "displayName": "Footer Column",
+    "icon": "layer",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": { "type": "string", "required": true },
+    "links": { "type": "component", "component": "shared.link", "repeatable": true }
+  }
+}

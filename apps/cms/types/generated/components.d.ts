@@ -1,5 +1,60 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
+export interface LayoutFooter extends Struct.ComponentSchema {
+  collectionName: 'components_layout_footers';
+  info: {
+    description: '';
+    displayName: 'Footer';
+    icon: 'layout';
+  };
+  attributes: {
+    columns: Schema.Attribute.Component<'layout.footer-column', true>;
+    legal: Schema.Attribute.String;
+    socials: Schema.Attribute.Component<'shared.social-link', true>;
+    tagline: Schema.Attribute.Text;
+  };
+}
+
+export interface LayoutFooterColumn extends Struct.ComponentSchema {
+  collectionName: 'components_layout_footer_columns';
+  info: {
+    description: '';
+    displayName: 'Footer Column';
+    icon: 'layer';
+  };
+  attributes: {
+    links: Schema.Attribute.Component<'shared.link', true>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface LayoutNavItem extends Struct.ComponentSchema {
+  collectionName: 'components_layout_nav_items';
+  info: {
+    description: '';
+    displayName: 'Nav Item';
+    icon: 'bulletList';
+  };
+  attributes: {
+    children: Schema.Attribute.Component<'shared.link', true>;
+    href: Schema.Attribute.String & Schema.Attribute.Required;
+    label: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface LayoutNavigation extends Struct.ComponentSchema {
+  collectionName: 'components_layout_navigations';
+  info: {
+    description: '';
+    displayName: 'Navigation';
+    icon: 'apps';
+  };
+  attributes: {
+    cta: Schema.Attribute.Component<'shared.link', false>;
+    items: Schema.Attribute.Component<'layout.nav-item', true>;
+  };
+}
+
 export interface SectionsCta extends Struct.ComponentSchema {
   collectionName: 'components_sections_ctas';
   info: {
@@ -99,9 +154,29 @@ export interface SharedLink extends Struct.ComponentSchema {
   };
 }
 
+export interface SharedSocialLink extends Struct.ComponentSchema {
+  collectionName: 'components_shared_social_links';
+  info: {
+    description: '';
+    displayName: 'Social Link';
+    icon: 'earth';
+  };
+  attributes: {
+    href: Schema.Attribute.String & Schema.Attribute.Required;
+    platform: Schema.Attribute.Enumeration<
+      ['instagram', 'facebook', 'linkedin', 'youtube', 'whatsapp']
+    > &
+      Schema.Attribute.Required;
+  };
+}
+
 declare module '@strapi/strapi' {
   export namespace Public {
     export interface ComponentSchemas {
+      'layout.footer': LayoutFooter;
+      'layout.footer-column': LayoutFooterColumn;
+      'layout.nav-item': LayoutNavItem;
+      'layout.navigation': LayoutNavigation;
       'sections.cta': SectionsCta;
       'sections.hero': SectionsHero;
       'sections.philosophy': SectionsPhilosophy;
@@ -109,6 +184,7 @@ declare module '@strapi/strapi' {
       'sections.stat': SectionsStat;
       'shared.amenity': SharedAmenity;
       'shared.link': SharedLink;
+      'shared.social-link': SharedSocialLink;
     }
   }
 }

@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_layout_footers",
+  "info": {
+    "displayName": "Footer",
+    "icon": "layout",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "tagline": { "type": "text" },
+    "columns": { "type": "component", "component": "layout.footer-column", "repeatable": true },
+    "socials": { "type": "component", "component": "shared.social-link", "repeatable": true },
+    "legal": { "type": "string" }
+  }
+}

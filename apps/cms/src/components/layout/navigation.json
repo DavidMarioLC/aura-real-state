@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_layout_navigations",
+  "info": {
+    "displayName": "Navigation",
+    "icon": "apps",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "items": { "type": "component", "component": "layout.nav-item", "repeatable": true },
+    "cta": { "type": "component", "component": "shared.link", "repeatable": false }
+  }
+}
