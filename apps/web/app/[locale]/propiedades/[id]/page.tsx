@@ -1,25 +1,46 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { alternatesFor } from "@/i18n/metadata";
+import { Link } from "@/i18n/navigation";
+import { toLocale } from "@/i18n/params";
+import { routing } from "@/i18n/routing";
+import {
+  fmtPrice,
+  getAgent,
+  getProperties,
+  getPropertyById,
+  PROPERTY_IDS,
+} from "../../../data";
 import PropertyCard from "../../components/PropertyCard";
-import { fmtPrice, getAgent, getPropertyById, PROPERTIES } from "../../data";
 
 export function generateStaticParams() {
-  return PROPERTIES.map((p) => ({ id: p.id }));
+  return routing.locales.flatMap((locale) =>
+    PROPERTY_IDS.map((id) => ({ locale, id })),
+  );
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ locale: string; id: string }>;
 }): Promise<Metadata> {
-  const { id } = await params;
-  const property = getPropertyById(id);
+  const { locale: rawLocale, id } = await params;
+  const locale = toLocale(rawLocale);
+  const property = getPropertyById(id, locale);
   if (!property) return {};
 
-  const title = `${property.title} en ${property.city}`;
-  const specs = `${property.type} · ${property.beds} hab · ${property.baths} baños · ${property.sqm} m² · ${fmtPrice(property.price)}.`;
+  const t = await getTranslations({ locale, namespace: "Metadata.property" });
+  const values = { title: property.title, city: property.city };
+
+  const specs = t("specs", {
+    type: property.type,
+    beds: property.beds,
+    baths: property.baths,
+    sqm: property.sqm,
+    price: fmtPrice(property.price),
+  });
   const remaining = 157 - specs.length - 1;
   const teaser =
     property.description.length > remaining
@@ -28,13 +49,13 @@ export async function generateMetadata({
   const description = `${specs} ${teaser}`;
 
   return {
-    title,
+    title: t("title", values),
     description,
-    alternates: { canonical: `/propiedades/${property.id}` },
+    alternates: alternatesFor(`/propiedades/${property.id}`, locale),
     openGraph: {
-      title: `${title} — Aura`,
+      title: t("ogTitle", values),
       description,
-      url: `/propiedades/${property.id}`,
+      url: `/${locale}/propiedades/${property.id}`,
     },
   };
 }
@@ -42,14 +63,20 @@ export async function generateMetadata({
 export default async function PropertyDetailPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ locale: string; id: string }>;
 }) {
-  const { id } = await params;
-  const property = getPropertyById(id);
+  const { locale: rawLocale, id } = await params;
+  const locale = toLocale(rawLocale);
+  setRequestLocale(locale);
+
+  const property = getPropertyById(id, locale);
   if (!property) notFound();
 
-  const agent = getAgent(property);
-  const related = PROPERTIES.filter((p) => p.id !== property.id).slice(0, 3);
+  const t = await getTranslations("PropertyDetail");
+  const agent = getAgent(property, locale);
+  const related = getProperties(locale)
+    .filter((p) => p.id !== property.id)
+    .slice(0, 3);
 
   return (
     <div>
@@ -58,7 +85,7 @@ export default async function PropertyDetailPage({
           href="/propiedades"
           className="w-fit text-[13px] font-bold text-[#4a473f]"
         >
-          ← Volver a propiedades
+          {t("back")}
         </Link>
       </div>
 
@@ -66,7 +93,7 @@ export default async function PropertyDetailPage({
         <div className="relative h-[520px] w-full">
           <Image
             src="/placeholder.svg"
-            alt={`Fachada o interior de ${property.title}`}
+            alt={t("mainImageAlt", { title: property.title })}
             fill
             sizes="(max-width: 1024px) 100vw, 66vw"
             className="object-cover"
@@ -76,7 +103,7 @@ export default async function PropertyDetailPage({
           <div className="relative h-full w-full">
             <Image
               src="/placeholder.svg"
-              alt={`Detalle interior de ${property.title}`}
+              alt={t("interiorImageAlt", { title: property.title })}
               fill
               sizes="(max-width: 1024px) 50vw, 33vw"
               className="object-cover"
@@ -85,7 +112,7 @@ export default async function PropertyDetailPage({
           <div className="relative h-full w-full">
             <Image
               src="/placeholder.svg"
-              alt={`Exterior y jardín de ${property.title}`}
+              alt={t("exteriorImageAlt", { title: property.title })}
               fill
               sizes="(max-width: 1024px) 50vw, 33vw"
               className="object-cover"
@@ -94,7 +121,7 @@ export default async function PropertyDetailPage({
           <div className="relative h-full w-full">
             <Image
               src="/placeholder.svg"
-              alt={`Vista adicional de ${property.title}`}
+              alt={t("extraImageAlt", { title: property.title })}
               fill
               sizes="(max-width: 1024px) 50vw, 33vw"
               className="object-cover"
@@ -118,27 +145,27 @@ export default async function PropertyDetailPage({
           <div className="mb-8 flex gap-10 border-t border-b border-[#201f1c]/12 py-6">
             <div>
               <div className="text-[22px] font-bold">{property.beds}</div>
-              <div className="text-[13px] text-[#4a473f]">Habitaciones</div>
+              <div className="text-[13px] text-[#4a473f]">{t("beds")}</div>
             </div>
             <div>
               <div className="text-[22px] font-bold">{property.baths}</div>
-              <div className="text-[13px] text-[#4a473f]">Baños</div>
+              <div className="text-[13px] text-[#4a473f]">{t("baths")}</div>
             </div>
             <div>
               <div className="text-[22px] font-bold">{property.sqm} m²</div>
-              <div className="text-[13px] text-[#4a473f]">Superficie</div>
+              <div className="text-[13px] text-[#4a473f]">{t("area")}</div>
             </div>
           </div>
 
           <h2 className="mb-3.5 font-[family-name:var(--font-cormorant)] text-[22px] font-medium">
-            Descripción
+            {t("descriptionHeading")}
           </h2>
           <p className="mb-9 text-base leading-loose text-[#4a473f]">
             {property.description}
           </p>
 
           <h2 className="mb-4 font-[family-name:var(--font-cormorant)] text-[22px] font-medium">
-            Amenidades
+            {t("amenitiesHeading")}
           </h2>
           <div className="mb-5 flex flex-wrap gap-3">
             {property.amenities.map((am) => (
@@ -155,12 +182,12 @@ export default async function PropertyDetailPage({
         <div>
           <div className="sticky top-[120px] bg-[#efe8db] p-8">
             <p className="mb-4.5 text-xs font-bold tracking-[1px] text-[#a9834f] uppercase">
-              Asesor a cargo
+              {t("agentEyebrow")}
             </p>
             <div className="relative mb-4 h-[76px] w-[76px] overflow-hidden rounded-full bg-[#e8dfce]">
               <Image
                 src="/placeholder.svg"
-                alt={`Foto de ${agent.name}`}
+                alt={t("agentPhotoAlt", { name: agent.name })}
                 fill
                 sizes="76px"
                 className="object-cover"
@@ -174,7 +201,7 @@ export default async function PropertyDetailPage({
               href="/contacto"
               className="block bg-[#201f1c] py-3.5 text-center text-sm font-bold tracking-[0.5px] text-[#f6f2ea]"
             >
-              Solicitar información
+              {t("agentCta")}
             </Link>
           </div>
         </div>
@@ -182,7 +209,7 @@ export default async function PropertyDetailPage({
 
       <div className="mx-auto max-w-[1400px] px-8 pt-28 pb-30 lg:px-16">
         <h2 className="mb-9 font-[family-name:var(--font-cormorant)] text-[32px] font-medium">
-          Propiedades relacionadas
+          {t("relatedHeading")}
         </h2>
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {related.map((p) => (

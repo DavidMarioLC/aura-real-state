@@ -1,0 +1,130 @@
+{
+  "Metadata": {
+    "home": {
+      "title": "Aura — Bienes raíces de autor",
+      "description": "Un portafolio curado de residencias, villas y penthouses seleccionados con criterio, para quienes no negocian el buen gusto."
+    },
+    "properties": {
+      "title": "Propiedades",
+      "description": "Explora nuestro portafolio vigente de residencias, villas, penthouses y departamentos, filtrado por ubicación, tipo, precio y habitaciones.",
+      "ogTitle": "Propiedades — Aura",
+      "ogDescription": "Explora nuestro portafolio vigente de residencias, villas, penthouses y departamentos."
+    },
+    "team": {
+      "title": "Equipo",
+      "description": "Conoce al equipo de asesores de Aura: un grupo pequeño y especializado dedicado a acompañar cada transacción inmobiliaria con discreción y cercanía.",
+      "ogTitle": "Equipo — Aura",
+      "ogDescription": "Conoce al equipo de asesores de Aura."
+    },
+    "contact": {
+      "title": "Contáctanos",
+      "description": "Escríbenos y un asesor de Aura te contactará en menos de 24 horas. Oficina en Polanco, Ciudad de México.",
+      "ogTitle": "Contáctanos — Aura",
+      "ogDescription": "Escríbenos y un asesor de Aura te contactará en menos de 24 horas."
+    },
+    "property": {
+      "title": "{title} en {city}",
+      "ogTitle": "{title} en {city} — Aura",
+      "specs": "{type} · {beds} hab · {baths} baños · {sqm} m² · {price}."
+    }
+  },
+  "Nav": {
+    "home": "Inicio",
+    "properties": "Propiedades",
+    "team": "Equipo",
+    "contact": "Contáctanos",
+    "cta": "Agenda una visita",
+    "languageLabel": "Cambiar idioma"
+  },
+  "Footer": {
+    "tagline": "Bienes raíces de autor. Selección curada de residencias, villas y penthouses.",
+    "navigation": "Navegación",
+    "contact": "Contacto",
+    "office": "Oficina",
+    "rights": "© {year} Aura Bienes Raíces. Todos los derechos reservados."
+  },
+  "Home": {
+    "heroEyebrow": "Bienes raíces de autor",
+    "heroImageAlt": "Fotografía de fachada o interior insignia",
+    "heroTitle": "Propiedades que se sienten como un lugar propio",
+    "heroText": "Un portafolio curado de residencias, villas y penthouses seleccionados con criterio, para quienes no negocian el buen gusto.",
+    "heroCta": "Ver propiedades",
+    "philosophyEyebrow": "Nuestra filosofía",
+    "philosophyTitle": "Creemos que una casa excepcional se reconoce por el detalle, no por el tamaño.",
+    "philosophyText": "En Aura acompañamos a cada cliente con una mirada curatorial: seleccionamos, verificamos y presentamos únicamente propiedades que superan nuestro propio estándar de diseño, ubicación y construcción.",
+    "philosophyCta": "Conoce al equipo →",
+    "philosophyImageAlt": "Interior editorial, luz natural",
+    "statYears": "Años de trayectoria",
+    "statProperties": "Propiedades colocadas",
+    "statCities": "Ciudades",
+    "featuredEyebrow": "Selección actual",
+    "featuredTitle": "Propiedades destacadas",
+    "featuredCta": "Ver todas las propiedades →",
+    "ctaQuote": "\"Cada propiedad cuenta una historia. Ayudémosle a encontrar la suya.\"",
+    "ctaButton": "Hablemos hoy"
+  },
+  "Properties": {
+    "eyebrow": "Portafolio",
+    "title": "Propiedades",
+    "intro": "Explora nuestra selección vigente, filtrada por ubicación, tipo, precio y habitaciones.",
+    "cityAll": "Ubicación: todas",
+    "typeAll": "Tipo: todos",
+    "priceAll": "Precio: cualquiera",
+    "priceB1": "Hasta $900,000",
+    "priceB2": "$900,000 – $1.5M",
+    "priceB3": "$1.5M – $2.5M",
+    "priceB4": "Más de $2.5M",
+    "bedsAll": "Habitaciones: todas",
+    "bedsMin": "{count}+ habitaciones",
+    "results": "{count, plural, one {# propiedad encontrada} other {# propiedades encontradas}}",
+    "clearFilters": "Limpiar filtros",
+    "resultsHeading": "Resultados de propiedades",
+    "empty": "Ninguna propiedad coincide con estos filtros. Prueba ajustando la búsqueda."
+  },
+  "PropertyCard": {
+    "specs": "{beds} hab · {baths} baños · {sqm} m²"
+  },
+  "PropertyDetail": {
+    "back": "← Volver a propiedades",
+    "mainImageAlt": "Fachada o interior de {title}",
+    "interiorImageAlt": "Detalle interior de {title}",
+    "exteriorImageAlt": "Exterior y jardín de {title}",
+    "extraImageAlt": "Vista adicional de {title}",
+    "beds": "Habitaciones",
+    "baths": "Baños",
+    "area": "Superficie",
+    "descriptionHeading": "Descripción",
+    "amenitiesHeading": "Amenidades",
+    "agentEyebrow": "Asesor a cargo",
+    "agentPhotoAlt": "Foto de {name}",
+    "agentCta": "Solicitar información",
+    "relatedHeading": "Propiedades relacionadas"
+  },
+  "Team": {
+    "eyebrow": "Quiénes somos",
+    "title": "Nuestro equipo",
+    "intro": "Un grupo pequeño y especializado de asesores dedicados a acompañar cada transacción con discreción y cercanía.",
+    "photoAlt": "Foto de {name}, {role} en Aura"
+  },
+  "Contact": {
+    "eyebrow": "Escríbenos",
+    "title": "Contáctanos",
+    "intro": "Cuéntanos qué estás buscando y un asesor de Aura te contactará en menos de 24 horas.",
+    "fallbackName": "gracias",
+    "successTitle": "Gracias, {name}.",
+    "successText": "Hemos recibido tu mensaje. Un asesor de Aura se pondrá en contacto contigo muy pronto.",
+    "fieldName": "Nombre completo",
+    "fieldEmail": "Correo",
+    "fieldPhone": "Teléfono",
+    "fieldMessage": "Mensaje",
+    "submit": "Enviar mensaje",
+    "mapAlt": "Mapa de ubicación de la oficina de Aura en Polanco, Ciudad de México",
+    "office": "Oficina",
+    "officeAddress": "Av. Presidente Masaryk 111",
+    "officeCity": "Polanco, Ciudad de México",
+    "directContact": "Contacto directo",
+    "hours": "Horario de atención",
+    "hoursWeekdays": "Lunes a viernes · 9:00 – 19:00",
+    "hoursSaturday": "Sábado · 10:00 – 14:00"
+  }
+}

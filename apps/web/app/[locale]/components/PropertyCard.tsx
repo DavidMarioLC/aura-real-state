@@ -1,6 +1,7 @@
 import Image from "next/image";
-import Link from "next/link";
-import { fmtPrice, type Property } from "../data";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
+import { fmtPrice, type Property } from "../../data";
 
 export default function PropertyCard({
   property,
@@ -13,6 +14,8 @@ export default function PropertyCard({
   titleSize?: string;
   showSpecs?: boolean;
 }) {
+  const t = useTranslations("PropertyCard");
+
   return (
     <Link href={`/propiedades/${property.id}`} className="flex flex-col">
       <div
@@ -38,7 +41,11 @@ export default function PropertyCard({
         </h3>
         {showSpecs && (
           <p className="mb-2 text-sm text-[#4a473f]">
-            {property.beds} hab · {property.baths} baños · {property.sqm} m²
+            {t("specs", {
+              beds: property.beds,
+              baths: property.baths,
+              sqm: property.sqm,
+            })}
           </p>
         )}
         <p className="text-base font-bold">{fmtPrice(property.price)}</p>
