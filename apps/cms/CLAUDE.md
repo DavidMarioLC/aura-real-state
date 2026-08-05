@@ -51,12 +51,15 @@ Components live in `src/components/`: `shared.link` (label + href, reused by her
 `home-page.featuredProperties` is a **many-way relation** (`oneToMany` with no `mappedBy`) to `property`, deliberately **not localized**:
 
 - Many-way means no inverse field appears on `Property`, so the editor's property form stays clean.
-- Non-localized means the curation is done once; Strapi 5 relations point to documents, so populating under `?locale=es` returns the Spanish version of the same entries.
+- Strapi 5 relations point to documents, so populating under `?locale=es` returns the Spanish version of the same entries — the curation survives translation.
+- **`localized: false` does not make the relation propagate across locales.** Writing `featuredProperties` on the `en` version leaves `?locale=es` returning `[]`; the relation has to be written on *each* locale. Verified against the running API — set it in both when curating, whether from the admin or the Documents API.
 - It replaced a `featured` boolean that used to live on `property`. **Do not reintroduce that boolean** — a flag can't express *order*, and the home renders an ordered, fixed number of cards. The relation does both, and keeps the decision in the page that renders it.
 
 ### i18n
 
 Locales are `en` (default) and `es`, seeded in `bootstrap`. Note the open decision: **the default locale is `en` while all site copy is Spanish**, so once `apps/web` has locale routing, `/` would serve English. Revisit `DEFAULT_LOCALE_CODE` in `src/index.ts` before building those routes.
+
+Writing a second locale through the Documents API: `create({ locale })` makes a **new document**, it does not add a locale version — even for a single type, which is how the home page briefly ended up as two separate documents. Create the default locale once, then reach every other locale with `update({ documentId, locale, data })` on that same `documentId`. Deleting is the mirror image: `delete({ documentId })` removes only the default-locale version, so pass `locale: '*'` to drop the whole document.
 
 ### Seeding
 
