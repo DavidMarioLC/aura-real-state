@@ -1,6 +1,7 @@
 import { graphql } from "@/graphql";
 import { strapi } from "@/graphql/client";
 import type { Locale } from "@/i18n/routing";
+import { type CmsLink, compact } from "./types";
 
 /**
  * Site chrome — the wordmark, the nav and the footer. `siteName` is shared
@@ -36,9 +37,6 @@ const GlobalQuery = graphql(`
   }
 `);
 
-/** A link authored in the CMS: a site path (`/equipo`), a `mailto:` or a URL. */
-export type CmsLink = { label: string; href: string };
-
 export type FooterColumn = {
   title: string;
   /** Plain text for columns that are an address rather than a list of links. */
@@ -55,11 +53,6 @@ export type SiteChrome = {
     legal: string | null;
   };
 };
-
-/** Strapi types every component list as nullable, entries included. */
-function compact<T>(list: readonly (T | null)[] | null | undefined): T[] {
-  return list?.filter((item): item is T => item !== null) ?? [];
-}
 
 /**
  * Reads the chrome for one locale. Strapi's nullability is absorbed here so

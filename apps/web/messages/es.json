@@ -31,26 +31,6 @@
   "Nav": {
     "languageLabel": "Cambiar idioma"
   },
-  "Home": {
-    "heroEyebrow": "Bienes raíces de autor",
-    "heroImageAlt": "Fotografía de fachada o interior insignia",
-    "heroTitle": "Propiedades que se sienten como un lugar propio",
-    "heroText": "Un portafolio curado de residencias, villas y penthouses seleccionados con criterio, para quienes no negocian el buen gusto.",
-    "heroCta": "Ver propiedades",
-    "philosophyEyebrow": "Nuestra filosofía",
-    "philosophyTitle": "Creemos que una casa excepcional se reconoce por el detalle, no por el tamaño.",
-    "philosophyText": "En Aura acompañamos a cada cliente con una mirada curatorial: seleccionamos, verificamos y presentamos únicamente propiedades que superan nuestro propio estándar de diseño, ubicación y construcción.",
-    "philosophyCta": "Conoce al equipo →",
-    "philosophyImageAlt": "Interior editorial, luz natural",
-    "statYears": "Años de trayectoria",
-    "statProperties": "Propiedades colocadas",
-    "statCities": "Ciudades",
-    "featuredEyebrow": "Selección actual",
-    "featuredTitle": "Propiedades destacadas",
-    "featuredCta": "Ver todas las propiedades →",
-    "ctaQuote": "\"Cada propiedad cuenta una historia. Ayudémosle a encontrar la suya.\"",
-    "ctaButton": "Hablemos hoy"
-  },
   "Properties": {
     "eyebrow": "Portafolio",
     "title": "Propiedades",

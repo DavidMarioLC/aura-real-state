@@ -31,26 +31,6 @@
   "Nav": {
     "languageLabel": "Change language"
   },
-  "Home": {
-    "heroEyebrow": "Signature real estate",
-    "heroImageAlt": "Photograph of a flagship façade or interior",
-    "heroTitle": "Properties that feel like a place of your own",
-    "heroText": "A curated portfolio of residences, villas and penthouses chosen with judgement, for those who never compromise on taste.",
-    "heroCta": "View properties",
-    "philosophyEyebrow": "Our philosophy",
-    "philosophyTitle": "We believe an exceptional home is recognised by its detail, not its size.",
-    "philosophyText": "At Aura we guide every client with a curatorial eye: we select, verify and present only properties that exceed our own standard of design, location and construction.",
-    "philosophyCta": "Meet the team →",
-    "philosophyImageAlt": "Editorial interior, natural light",
-    "statYears": "Years in the market",
-    "statProperties": "Properties placed",
-    "statCities": "Cities",
-    "featuredEyebrow": "Current selection",
-    "featuredTitle": "Featured properties",
-    "featuredCta": "View all properties →",
-    "ctaQuote": "\"Every property tells a story. Let us help you find yours.\"",
-    "ctaButton": "Let's talk today"
-  },
   "Properties": {
     "eyebrow": "Portfolio",
     "title": "Properties",
