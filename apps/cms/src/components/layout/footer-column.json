@@ -8,6 +8,7 @@
   "options": {},
   "attributes": {
     "title": { "type": "string", "required": true },
+    "body": { "type": "text" },
     "links": { "type": "component", "component": "shared.link", "repeatable": true }
   }
 }

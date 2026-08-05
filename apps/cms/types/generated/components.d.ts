@@ -23,6 +23,7 @@ export interface LayoutFooterColumn extends Struct.ComponentSchema {
     icon: 'layer';
   };
   attributes: {
+    body: Schema.Attribute.Text;
     links: Schema.Attribute.Component<'shared.link', true>;
     title: Schema.Attribute.String & Schema.Attribute.Required;
   };
