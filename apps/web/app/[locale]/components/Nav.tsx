@@ -1,22 +1,19 @@
 "use client";
 
 import { useLocale, useTranslations } from "next-intl";
+import type { SiteChrome } from "@/cms/global";
 import { Link, usePathname } from "@/i18n/navigation";
 import { LOCALE_LABELS, type Locale, routing } from "@/i18n/routing";
+import ContentLink from "./ContentLink";
 
-const LINKS = [
-  { href: "/", key: "home" },
-  { href: "/propiedades", key: "properties" },
-  { href: "/equipo", key: "team" },
-  { href: "/contacto", key: "contact" },
-] as const;
+type Props = { siteName: string; nav: SiteChrome["nav"] };
 
 function isActive(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
   return pathname.startsWith(href);
 }
 
-export default function Nav() {
+export default function Nav({ siteName, nav }: Props) {
   const t = useTranslations("Nav");
   const pathname = usePathname();
   const activeLocale = useLocale() as Locale;
@@ -25,23 +22,23 @@ export default function Nav() {
     <div className="sticky top-0 z-[100] flex items-center justify-between border-b border-[#201f1c]/10 bg-[#f6f2ea] px-12 py-5">
       <Link
         href="/"
-        className="font-[family-name:var(--font-cormorant)] text-[30px] font-semibold tracking-[4px] text-[#201f1c]"
+        className="font-[family-name:var(--font-cormorant)] text-[30px] font-semibold tracking-[4px] text-[#201f1c] uppercase"
       >
-        AURA
+        {siteName}
       </Link>
       <div className="hidden items-center gap-10 md:flex">
-        {LINKS.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
+        {nav.items.map((item) => (
+          <ContentLink
+            key={item.href}
+            href={item.href}
             className={`border-b-2 pb-1 text-sm font-semibold tracking-[0.5px] ${
-              isActive(pathname, link.href)
+              isActive(pathname, item.href)
                 ? "border-[#a9834f] text-[#201f1c]"
                 : "border-transparent text-[#4a473f]"
             }`}
           >
-            {t(link.key)}
-          </Link>
+            {item.label}
+          </ContentLink>
         ))}
         <nav
           aria-label={t("languageLabel")}
@@ -62,12 +59,14 @@ export default function Nav() {
             </Link>
           ))}
         </nav>
-        <Link
-          href="/contacto"
-          className="bg-[#201f1c] px-6 py-3 text-[13px] font-semibold tracking-[0.5px] text-[#f6f2ea]"
-        >
-          {t("cta")}
-        </Link>
+        {nav.cta && (
+          <ContentLink
+            href={nav.cta.href}
+            className="bg-[#201f1c] px-6 py-3 text-[13px] font-semibold tracking-[0.5px] text-[#f6f2ea]"
+          >
+            {nav.cta.label}
+          </ContentLink>
+        )}
       </div>
     </div>
   );

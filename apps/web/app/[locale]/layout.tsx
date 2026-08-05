@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, Manrope } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getSiteChrome } from "@/cms/global";
 import { alternatesFor } from "@/i18n/metadata";
 import { toLocale } from "@/i18n/params";
 import { HTML_LANG, OG_LOCALE, routing } from "@/i18n/routing";
@@ -73,6 +74,8 @@ export default async function LocaleLayout({
 
   setRequestLocale(locale);
 
+  const { siteName, nav, footer } = await getSiteChrome(locale);
+
   return (
     <html
       lang={HTML_LANG[locale]}
@@ -80,9 +83,9 @@ export default async function LocaleLayout({
     >
       <body className="flex min-h-full flex-col bg-[#f6f2ea] font-[family-name:var(--font-manrope)] text-[#201f1c]">
         <NextIntlClientProvider>
-          <Nav />
+          <Nav siteName={siteName} nav={nav} />
           <main className="flex-1">{children}</main>
-          <Footer />
+          <Footer siteName={siteName} footer={footer} />
         </NextIntlClientProvider>
       </body>
     </html>

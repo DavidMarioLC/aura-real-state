@@ -29,19 +29,7 @@
     }
   },
   "Nav": {
-    "home": "Home",
-    "properties": "Properties",
-    "team": "Team",
-    "contact": "Contact",
-    "cta": "Book a viewing",
     "languageLabel": "Change language"
-  },
-  "Footer": {
-    "tagline": "Signature real estate. A curated selection of residences, villas and penthouses.",
-    "navigation": "Navigation",
-    "contact": "Contact",
-    "office": "Office",
-    "rights": "© {year} Aura Bienes Raíces. All rights reserved."
   },
   "Home": {
     "heroEyebrow": "Signature real estate",

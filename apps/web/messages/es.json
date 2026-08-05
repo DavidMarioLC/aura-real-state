@@ -29,19 +29,7 @@
     }
   },
   "Nav": {
-    "home": "Inicio",
-    "properties": "Propiedades",
-    "team": "Equipo",
-    "contact": "Contáctanos",
-    "cta": "Agenda una visita",
     "languageLabel": "Cambiar idioma"
-  },
-  "Footer": {
-    "tagline": "Bienes raíces de autor. Selección curada de residencias, villas y penthouses.",
-    "navigation": "Navegación",
-    "contact": "Contacto",
-    "office": "Oficina",
-    "rights": "© {year} Aura Bienes Raíces. Todos los derechos reservados."
   },
   "Home": {
     "heroEyebrow": "Bienes raíces de autor",
