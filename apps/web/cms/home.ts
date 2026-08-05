@@ -1,7 +1,7 @@
 import { graphql } from "@/graphql";
 import { strapi } from "@/graphql/client";
 import type { Locale } from "@/i18n/routing";
-import { type CmsImage, type CmsLink, compact } from "./types";
+import { type CmsImage, type CmsLink, compact, toImage } from "./types";
 
 /**
  * The home page single type. Every section is localized; `hero` is the only
@@ -20,6 +20,8 @@ const HomePageQuery = graphql(`
         }
         image {
           url
+          width
+          height
         }
         imageAlt
       }
@@ -33,6 +35,8 @@ const HomePageQuery = graphql(`
         }
         image {
           url
+          width
+          height
         }
         imageAlt
       }
@@ -64,7 +68,7 @@ type Hero = {
   title: string;
   subtitle: string | null;
   cta: CmsLink | null;
-  image: CmsImage | null;
+  image: CmsImage;
   imageAlt: string | null;
 };
 
@@ -73,7 +77,7 @@ type Philosophy = {
   title: string;
   body: string | null;
   link: CmsLink | null;
-  image: CmsImage | null;
+  image: CmsImage;
   imageAlt: string | null;
 };
 
@@ -112,7 +116,7 @@ export async function getHomeContent(locale: Locale): Promise<HomeContent> {
       title: hero.title,
       subtitle: hero.subtitle ?? null,
       cta: hero.cta ?? null,
-      image: hero.image ?? null,
+      image: toImage(hero.image),
       imageAlt: hero.imageAlt ?? null,
     },
     philosophy: philosophy
@@ -121,7 +125,7 @@ export async function getHomeContent(locale: Locale): Promise<HomeContent> {
           title: philosophy.title,
           body: philosophy.body ?? null,
           link: philosophy.link ?? null,
-          image: philosophy.image ?? null,
+          image: toImage(philosophy.image),
           imageAlt: philosophy.imageAlt ?? null,
         }
       : null,

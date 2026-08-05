@@ -26,7 +26,7 @@ export default async function Home({
       {/* HERO */}
       <div className="relative h-[88vh] min-h-[560px] w-full">
         <Image
-          src={hero.image?.url ?? "/placeholder.svg"}
+          src={hero.image.url}
           alt={hero.imageAlt ?? ""}
           fill
           priority
@@ -85,13 +85,13 @@ export default async function Home({
               </ContentLink>
             )}
           </div>
-          <div className="relative h-[520px] w-full">
+          <div className="flex h-[520px] w-full items-center justify-center">
             <Image
-              src={philosophy.image?.url ?? "/placeholder.svg"}
+              src={philosophy.image.url}
               alt={philosophy.imageAlt ?? ""}
-              fill
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover"
+              width={philosophy.image.width}
+              height={philosophy.image.height}
+              className="h-auto max-h-full w-auto max-w-[420px] object-contain"
             />
           </div>
         </div>
