@@ -1,11 +1,16 @@
 import { graphql } from "@/graphql";
 import { strapi } from "@/graphql/client";
 import type { Locale } from "@/i18n/routing";
+import { type PropertySummary, toSummary } from "./properties";
 import { type CmsImage, type CmsLink, compact, toImage } from "./types";
 
 /**
  * The home page single type. Every section is localized; `hero` is the only
  * one Strapi requires, so the rest render only when an editor filled them in.
+ *
+ * `featuredProperties` is the one relation: Strapi does not localize it (the
+ * editorial selection is the same in both locales), but it resolves each entry
+ * in the locale asked of the parent, so the cards come out already translated.
  */
 const HomePageQuery = graphql(`
   query HomePage($locale: I18NLocaleCode!) {
@@ -52,6 +57,21 @@ const HomePageQuery = graphql(`
           href
         }
       }
+      featuredProperties {
+        slug
+        title
+        city
+        type
+        price
+        beds
+        baths
+        sqm
+        images(pagination: { limit: 1 }) {
+          url
+          width
+          height
+        }
+      }
       cta {
         quote
         link {
@@ -90,6 +110,8 @@ export type HomeContent = {
     title: string;
     link: CmsLink | null;
   } | null;
+  /** The editor's selection, in the order they arranged it. May be empty. */
+  featuredProperties: PropertySummary[];
   cta: { quote: string; link: CmsLink | null } | null;
 };
 
@@ -97,7 +119,9 @@ export async function getHomeContent(locale: Locale): Promise<HomeContent> {
   const { homePage } = await strapi(
     HomePageQuery,
     { locale },
-    { tags: ["home-page"] },
+    // Tagged `property` as well: the featured cards embed property fields, so
+    // editing one of them has to drop this entry from the cache too.
+    { tags: ["home-page", "property"] },
   );
 
   // Same rule as the site chrome: a locale without a published entry would
@@ -130,6 +154,7 @@ export async function getHomeContent(locale: Locale): Promise<HomeContent> {
         }
       : null,
     stats: compact(homePage.stats),
+    featuredProperties: compact(homePage.featuredProperties).map(toSummary),
     featuredHeading: featuredHeading
       ? {
           eyebrow: featuredHeading.eyebrow ?? null,

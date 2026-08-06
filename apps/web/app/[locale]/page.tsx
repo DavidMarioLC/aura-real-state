@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { setRequestLocale } from "next-intl/server";
 import { getHomeContent } from "@/cms/home";
-import { getProperties } from "@/cms/properties";
 import { toLocale } from "@/i18n/params";
 import ContentLink from "./components/ContentLink";
 import PropertyCard from "./components/PropertyCard";
@@ -15,11 +14,8 @@ export default async function Home({
   const locale = toLocale(rawLocale);
   setRequestLocale(locale);
 
-  const { hero, philosophy, stats, featuredHeading, cta } =
+  const { hero, philosophy, stats, featuredHeading, featuredProperties, cta } =
     await getHomeContent(locale);
-  // The editorial selection lives in Strapi as `homePage.featuredProperties`;
-  // until that relation is read here, the first three entries stand in for it.
-  const featured = (await getProperties(locale)).slice(0, 3);
 
   return (
     <div>
@@ -114,35 +110,37 @@ export default async function Home({
       )}
 
       {/* FEATURED */}
-      <div className="mx-auto max-w-[1400px] px-8 py-28 lg:px-16">
-        {featuredHeading && (
-          <div className="mb-12 flex flex-wrap items-end justify-between gap-5">
-            <div>
-              {featuredHeading.eyebrow && (
-                <p className="mb-4 text-[13px] font-bold tracking-[2px] text-[#a9834f] uppercase">
-                  {featuredHeading.eyebrow}
-                </p>
+      {featuredProperties.length > 0 && (
+        <div className="mx-auto max-w-[1400px] px-8 py-28 lg:px-16">
+          {featuredHeading && (
+            <div className="mb-12 flex flex-wrap items-end justify-between gap-5">
+              <div>
+                {featuredHeading.eyebrow && (
+                  <p className="mb-4 text-[13px] font-bold tracking-[2px] text-[#a9834f] uppercase">
+                    {featuredHeading.eyebrow}
+                  </p>
+                )}
+                <h2 className="font-[family-name:var(--font-cormorant)] text-4xl font-medium">
+                  {featuredHeading.title}
+                </h2>
+              </div>
+              {featuredHeading.link && (
+                <ContentLink
+                  href={featuredHeading.link.href}
+                  className="w-fit border-b-2 border-[#201f1c] pb-1 text-sm font-bold text-[#201f1c]"
+                >
+                  {featuredHeading.link.label}
+                </ContentLink>
               )}
-              <h2 className="font-[family-name:var(--font-cormorant)] text-4xl font-medium">
-                {featuredHeading.title}
-              </h2>
             </div>
-            {featuredHeading.link && (
-              <ContentLink
-                href={featuredHeading.link.href}
-                className="w-fit border-b-2 border-[#201f1c] pb-1 text-sm font-bold text-[#201f1c]"
-              >
-                {featuredHeading.link.label}
-              </ContentLink>
-            )}
+          )}
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {featuredProperties.map((property) => (
+              <PropertyCard key={property.slug} property={property} />
+            ))}
           </div>
-        )}
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {featured.map((p) => (
-            <PropertyCard key={p.slug} property={p} />
-          ))}
         </div>
-      </div>
+      )}
 
       {/* CTA BAND */}
       {cta && (

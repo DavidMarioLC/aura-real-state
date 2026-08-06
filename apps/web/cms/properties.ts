@@ -150,7 +150,8 @@ function toSlugMap(
   return slugs;
 }
 
-type SummaryFields = {
+/** The card fields any query can select — the home page's featured relation too. */
+export type SummaryFields = {
   slug: string;
   title: string;
   city: string;
@@ -166,7 +167,7 @@ type SummaryFields = {
   } | null)[];
 };
 
-function toSummary(property: SummaryFields): PropertySummary {
+export function toSummary(property: SummaryFields): PropertySummary {
   const { images, ...fields } = property;
   return { ...fields, image: toImage(images[0]) };
 }
