@@ -14,17 +14,32 @@
     "i18n": { "localized": true }
   },
   "attributes": {
-    "name": { "type": "string", "required": true },
+    "name": {
+      "type": "string",
+      "required": true,
+      "pluginOptions": { "i18n": { "localized": false } }
+    },
     "role": {
       "type": "string",
+      "required": true,
       "pluginOptions": { "i18n": { "localized": true } }
     },
     "bio": {
       "type": "text",
+      "required": true,
       "pluginOptions": { "i18n": { "localized": true } }
     },
-    "email": { "type": "email", "required": true },
-    "photo": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "email": {
+      "type": "email",
+      "required": true,
+      "pluginOptions": { "i18n": { "localized": false } }
+    },
+    "photo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"],
+      "pluginOptions": { "i18n": { "localized": false } }
+    },
     "properties": {
       "type": "relation",
       "relation": "oneToMany",

@@ -24,9 +24,10 @@ export type PropertySummary = {
   image: CmsImage;
 };
 
+/** The subset of an advisor a property page shows; the full one is `cms/agents.ts`. */
 export type PropertyAgent = {
   name: string;
-  role: string | null;
+  role: string;
   email: string;
   photo: CmsImage;
 };
@@ -248,7 +249,7 @@ export async function getPropertyBySlug(
     agent: agent
       ? {
           name: agent.name,
-          role: agent.role ?? null,
+          role: agent.role,
           email: agent.email,
           photo: toImage(agent.photo),
         }

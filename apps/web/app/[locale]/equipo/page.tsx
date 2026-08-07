@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getTeam } from "@/cms/agents";
 import { alternatesFor } from "@/i18n/metadata";
 import { toLocale } from "@/i18n/params";
-import { getTeam } from "../../data";
 
 export async function generateMetadata({
   params,
@@ -36,7 +36,7 @@ export default async function TeamPage({
   setRequestLocale(locale);
 
   const t = await getTranslations("Team");
-  const team = getTeam(locale);
+  const team = await getTeam(locale);
 
   return (
     <div>
@@ -54,7 +54,7 @@ export default async function TeamPage({
           <div key={m.id}>
             <div className="relative mb-5 h-[320px] w-full">
               <Image
-                src="/placeholder.svg"
+                src={m.photo.url}
                 alt={t("photoAlt", { name: m.name, role: m.role })}
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"

@@ -747,8 +747,8 @@ input AgentInput {
 type Agent {
   documentId: ID!
   name: String!
-  role: String
-  bio: String
+  role: String!
+  bio: String!
   email: String!
   photo: UploadFile
   properties_connection(filters: PropertyFiltersInput, pagination: PaginationArg = {  }, sort: [String] = []): PropertyRelationResponseCollection
