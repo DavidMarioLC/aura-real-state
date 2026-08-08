@@ -19,7 +19,7 @@ From the monorepo root: `pnpm db:up` / `pnpm db:down` start/stop the local Postg
 
 ## Architecture
 
-`apps/cms` is a [Strapi 5](https://docs.strapi.io) headless CMS instance holding the content model for the Aura site: `property`, `agent` and `home-page`. `apps/web` reads every one of them over GraphQL, so no editorial content is left in its static `app/data.ts`. The open work is copy for the `/propiedades`, `/equipo` and `/contacto` pages and a revalidation webhook (the front currently relies on a 1h ISR window).
+`apps/cms` is a [Strapi 5](https://docs.strapi.io) headless CMS instance holding the content model for the Aura site: the `property` and `agent` collections plus the `global`, `home-page`, `properties-page`, `team-page` and `contact-page` single types. `apps/web` reads every one of them over GraphQL, so no editorial content is left in its message files or its static `app/data.ts`. The open work is a revalidation webhook (the front currently relies on a 1h ISR window).
 
 - **Config** (`config/*.ts`), each exporting a function of `({ env }) => ...`:
   - `database.ts` — client selected via `DATABASE_CLIENT` env var (`postgres`, `mysql`, or `sqlite`, defaults to `sqlite`); connection details for each client are read from `DATABASE_*` env vars. Postgres uses `DATABASE_URL` as a connection string with individual `DATABASE_HOST`/`PORT`/etc. as fallbacks.
@@ -36,15 +36,21 @@ From the monorepo root: `pnpm db:up` / `pnpm db:down` start/stop the local Postg
 
 ## Content model
 
-All three content-types use `draftAndPublish` and are i18n-localized, with locales `en` and `es`. Per-field localization is set via `pluginOptions.i18n.localized`.
+Every content-type uses `draftAndPublish` and is i18n-localized, with locales `en` and `es`. Per-field localization is set via `pluginOptions.i18n.localized`.
 
 - **`property`** (collection) — explicitly localized: `title`, `slug` (uid from title), `description`, and the repeatable `shared.amenity` component. Explicitly **not** localized: `city`, `type` (enum house/villa/apartment/penthouse), `price`, `beds`, `baths`, `sqm`, `images` — one value serves both locales. `agent` is a `manyToOne` relation. Everything `apps/web` cannot render a page without is `required: true` (`title`, `slug`, `description`, `city`, `type`, `price`, `beds`, `baths`, `sqm`), which with draft & publish means it is enforced when an editor publishes; the front then reads them as non-null instead of inventing defaults. `images` and `agent` stay optional — the front falls back to a placeholder and hides the advisor card. **The type is an enum key, not a label**: `apps/web` translates it through its `PropertyType` message namespace, so don't turn it into display copy here.
 - **`agent`** (collection) — explicitly localized: `role`, `bio`. Explicitly **not** localized: `name`, `email`, `photo` — the same person under either locale. `required: true` on `name`, `role`, `bio` and `email`, the four fields an advisor card cannot render without; `photo` stays optional and falls back to the placeholder. `properties` is the `oneToMany` inverse of `property.agent`.
 
 Be explicit on every new field rather than relying on defaults — it's the difference between a decision and an accident.
-- **`home-page`** (single type) — the site home, modeled as **fixed component fields, not a dynamic zone**: `hero`, `philosophy`, `stats` (repeatable), `featuredHeading`, `cta`. The home has a fixed section order and each section has its own layout, so fixed fields keep the generated types exact and let the front render without switching on `__component`. Use a dynamic zone only if the sections ever need to be reordered by an editor.
+- **`home-page`** (single type) — the site home, modeled as **fixed component fields, not a dynamic zone**: `seo`, `hero`, `philosophy`, `stats` (repeatable), `featuredHeading`, `cta`. The home has a fixed section order and each section has its own layout, so fixed fields keep the generated types exact and let the front render without switching on `__component`. Use a dynamic zone only if the sections ever need to be reordered by an editor.
 
-Components live in `src/components/`: `shared.link` (label + href, reused by hero/philosophy/cta), `shared.amenity`, and the `sections.*` components above.
+- **`properties-page`, `team-page`, `contact-page`** (single types) — the copy of the three inner routes, one type per route. Each carries a required `seo` and a required `header`; `contact-page` adds the side column (`infoBlocks`, `map`, `mapAlt`). They hold **only what an editor would rewrite**: the filter controls of `/propiedades`, the contact form's field labels and the alt-text templates stay in `apps/web`'s message files as interface strings. `contact-page.infoBlocks` is repeatable and open-ended — office, direct contact and opening hours today, but the editor sets how many there are and in what order, and each `body` is plain multi-line text (the same idiom as the footer columns), not a link list.
+
+Components live in `src/components/`: `shared.link` (label + href, reused by hero/philosophy/cta), `shared.amenity`, `shared.seo`, and the `sections.*` components above (`page-header` and `info-block` included).
+
+### SEO
+
+`shared.seo` (`title`, `description`, required; `ogTitle`, `ogDescription`, optional) is **required on all four page-level single types**, `home-page` included — page titles and meta descriptions are editorial, so they live with the rest of the page's copy rather than in code. `apps/web` falls back to `title`/`description` when the Open Graph pair is empty, so only fill those in when they should differ.
 
 ### Featured properties
 

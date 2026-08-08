@@ -86,6 +86,33 @@ export interface SectionsHero extends Struct.ComponentSchema {
   };
 }
 
+export interface SectionsInfoBlock extends Struct.ComponentSchema {
+  collectionName: 'components_sections_info_blocks';
+  info: {
+    description: '';
+    displayName: 'Info Block';
+    icon: 'book';
+  };
+  attributes: {
+    body: Schema.Attribute.Text & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface SectionsPageHeader extends Struct.ComponentSchema {
+  collectionName: 'components_sections_page_headers';
+  info: {
+    description: '';
+    displayName: 'Page Header';
+    icon: 'apps';
+  };
+  attributes: {
+    eyebrow: Schema.Attribute.String;
+    intro: Schema.Attribute.Text;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface SectionsPhilosophy extends Struct.ComponentSchema {
   collectionName: 'components_sections_philosophies';
   info: {
@@ -155,6 +182,21 @@ export interface SharedLink extends Struct.ComponentSchema {
   };
 }
 
+export interface SharedSeo extends Struct.ComponentSchema {
+  collectionName: 'components_shared_seos';
+  info: {
+    description: '';
+    displayName: 'Seo';
+    icon: 'search';
+  };
+  attributes: {
+    description: Schema.Attribute.Text & Schema.Attribute.Required;
+    ogDescription: Schema.Attribute.Text;
+    ogTitle: Schema.Attribute.String;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface SharedSocialLink extends Struct.ComponentSchema {
   collectionName: 'components_shared_social_links';
   info: {
@@ -180,11 +222,14 @@ declare module '@strapi/strapi' {
       'layout.navigation': LayoutNavigation;
       'sections.cta': SectionsCta;
       'sections.hero': SectionsHero;
+      'sections.info-block': SectionsInfoBlock;
+      'sections.page-header': SectionsPageHeader;
       'sections.philosophy': SectionsPhilosophy;
       'sections.section-heading': SectionsSectionHeading;
       'sections.stat': SectionsStat;
       'shared.amenity': SharedAmenity;
       'shared.link': SharedLink;
+      'shared.seo': SharedSeo;
       'shared.social-link': SharedSocialLink;
     }
   }

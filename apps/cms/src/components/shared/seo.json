@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_shared_seos",
+  "info": {
+    "displayName": "Seo",
+    "icon": "search",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": { "type": "string", "required": true },
+    "description": { "type": "text", "required": true },
+    "ogTitle": { "type": "string" },
+    "ogDescription": { "type": "text" }
+  }
+}

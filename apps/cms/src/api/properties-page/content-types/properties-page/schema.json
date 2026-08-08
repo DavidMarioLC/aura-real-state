@@ -1,0 +1,32 @@
+{
+  "kind": "singleType",
+  "collectionName": "properties_pages",
+  "info": {
+    "singularName": "properties-page",
+    "pluralName": "properties-pages",
+    "displayName": "Properties Page",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": { "localized": true }
+  },
+  "attributes": {
+    "seo": {
+      "type": "component",
+      "component": "shared.seo",
+      "repeatable": false,
+      "required": true,
+      "pluginOptions": { "i18n": { "localized": true } }
+    },
+    "header": {
+      "type": "component",
+      "component": "sections.page-header",
+      "repeatable": false,
+      "required": true,
+      "pluginOptions": { "i18n": { "localized": true } }
+    }
+  }
+}

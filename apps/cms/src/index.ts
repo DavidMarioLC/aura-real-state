@@ -37,6 +37,9 @@ const PUBLIC_ACTIONS = [
   'api::agent.agent.find',
   'api::agent.agent.findOne',
   'api::home-page.home-page.find',
+  'api::properties-page.properties-page.find',
+  'api::team-page.team-page.find',
+  'api::contact-page.contact-page.find',
   'api::global.global.find',
 ];
 

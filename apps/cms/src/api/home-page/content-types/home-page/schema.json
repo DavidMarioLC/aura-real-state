@@ -14,6 +14,13 @@
     "i18n": { "localized": true }
   },
   "attributes": {
+    "seo": {
+      "type": "component",
+      "component": "shared.seo",
+      "repeatable": false,
+      "required": true,
+      "pluginOptions": { "i18n": { "localized": true } }
+    },
     "hero": {
       "type": "component",
       "component": "sections.hero",

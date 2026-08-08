@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_sections_page_headers",
+  "info": {
+    "displayName": "Page Header",
+    "icon": "apps",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": { "type": "string" },
+    "title": { "type": "string", "required": true },
+    "intro": { "type": "text" }
+  }
+}

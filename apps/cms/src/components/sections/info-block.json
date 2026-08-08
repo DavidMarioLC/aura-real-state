@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_sections_info_blocks",
+  "info": {
+    "displayName": "Info Block",
+    "icon": "book",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": { "type": "string", "required": true },
+    "body": { "type": "text", "required": true }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "kind": "singleType",
+  "collectionName": "contact_pages",
+  "info": {
+    "singularName": "contact-page",
+    "pluralName": "contact-pages",
+    "displayName": "Contact Page",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": { "localized": true }
+  },
+  "attributes": {
+    "seo": {
+      "type": "component",
+      "component": "shared.seo",
+      "repeatable": false,
+      "required": true,
+      "pluginOptions": { "i18n": { "localized": true } }
+    },
+    "header": {
+      "type": "component",
+      "component": "sections.page-header",
+      "repeatable": false,
+      "required": true,
+      "pluginOptions": { "i18n": { "localized": true } }
+    },
+    "infoBlocks": {
+      "type": "component",
+      "component": "sections.info-block",
+      "repeatable": true,
+      "pluginOptions": { "i18n": { "localized": true } }
+    },
+    "map": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"],
+      "pluginOptions": { "i18n": { "localized": false } }
+    },
+    "mapAlt": {
+      "type": "string",
+      "pluginOptions": { "i18n": { "localized": true } }
+    }
+  }
+}
