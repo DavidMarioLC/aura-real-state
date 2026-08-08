@@ -1,6 +1,8 @@
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
 import { getProperties } from "@/cms/properties";
+import { getPropertiesPage } from "@/cms/properties-page";
 import { toLocale } from "@/i18n/params";
+import PageHeader from "../components/PageHeader";
 import PropertiesBrowser from "./PropertiesBrowser";
 
 export default async function PropertiesPage({
@@ -12,20 +14,14 @@ export default async function PropertiesPage({
   const locale = toLocale(rawLocale);
   setRequestLocale(locale);
 
-  const t = await getTranslations("Properties");
-  const properties = await getProperties(locale);
+  const [{ header }, properties] = await Promise.all([
+    getPropertiesPage(locale),
+    getProperties(locale),
+  ]);
 
   return (
     <div>
-      <div className="mx-auto max-w-[1400px] px-8 pt-20 pb-10 lg:px-16">
-        <p className="mb-4 text-[13px] font-bold tracking-[2px] text-[#a9834f] uppercase">
-          {t("eyebrow")}
-        </p>
-        <h1 className="mb-3 font-[family-name:var(--font-cormorant)] text-[44px] font-medium">
-          {t("title")}
-        </h1>
-        <p className="max-w-[600px] text-base text-[#4a473f]">{t("intro")}</p>
-      </div>
+      <PageHeader header={header} className="pb-10" />
 
       <PropertiesBrowser properties={properties} />
     </div>

@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Manrope } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
 import { getSiteChrome } from "@/cms/global";
-import { alternatesFor } from "@/i18n/metadata";
+import { getHomeContent } from "@/cms/home";
+import { metadataFromSeo } from "@/i18n/metadata";
 import { toLocale } from "@/i18n/params";
 import { HTML_LANG, OG_LOCALE, routing } from "@/i18n/routing";
 import { SITE_NAME, SITE_URL } from "../site-config";
@@ -35,20 +36,20 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale: rawLocale } = await params;
   const locale = toLocale(rawLocale);
-  const t = await getTranslations({ locale, namespace: "Metadata.home" });
+  // This layout carries the home page's own metadata plus the OG/Twitter
+  // defaults every route inherits, so it reads the home's `seo` block.
+  const { seo } = await getHomeContent(locale);
+  const base = metadataFromSeo(seo, "/", locale);
 
   return {
+    ...base,
     metadataBase: new URL(SITE_URL),
     title: {
-      default: t("title"),
+      default: seo.title,
       template: `%s · ${SITE_NAME}`,
     },
-    description: t("description"),
-    alternates: alternatesFor("/", locale),
     openGraph: {
-      title: t("title"),
-      description: t("description"),
-      url: `/${locale}`,
+      ...base.openGraph,
       siteName: SITE_NAME,
       locale: OG_LOCALE[locale],
       type: "website",
@@ -56,8 +57,8 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: t("title"),
-      description: t("description"),
+      title: seo.ogTitle,
+      description: seo.ogDescription,
     },
   };
 }

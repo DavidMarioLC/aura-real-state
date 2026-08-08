@@ -4,6 +4,51 @@ export type CmsLink = { label: string; href: string };
 /** An uploaded image. Alt text lives in a sibling field, not on the media. */
 export type CmsImage = { url: string; width: number; height: number };
 
+/**
+ * The `shared.seo` component every page-level single type carries. Strapi
+ * requires `title` and `description`; the Open Graph pair is optional and
+ * falls back to them, so `generateMetadata` never has to branch.
+ */
+export type CmsSeo = {
+  title: string;
+  description: string;
+  ogTitle: string;
+  ogDescription: string;
+};
+
+export function toSeo(seo: {
+  title: string;
+  description: string;
+  ogTitle?: string | null;
+  ogDescription?: string | null;
+}): CmsSeo {
+  return {
+    title: seo.title,
+    description: seo.description,
+    ogTitle: seo.ogTitle || seo.title,
+    ogDescription: seo.ogDescription || seo.description,
+  };
+}
+
+/** The `sections.page-header` component: the eyebrow/title/intro block. */
+export type CmsPageHeader = {
+  eyebrow: string | null;
+  title: string;
+  intro: string | null;
+};
+
+export function toPageHeader(header: {
+  eyebrow?: string | null;
+  title: string;
+  intro?: string | null;
+}): CmsPageHeader {
+  return {
+    eyebrow: header.eyebrow ?? null,
+    title: header.title,
+    intro: header.intro ?? null,
+  };
+}
+
 /** The `public/placeholder.svg` shipped with the app, at its real size. */
 const PLACEHOLDER: CmsImage = {
   url: "/placeholder.svg",

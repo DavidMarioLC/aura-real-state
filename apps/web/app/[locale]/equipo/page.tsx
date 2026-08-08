@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getTeam } from "@/cms/agents";
-import { alternatesFor } from "@/i18n/metadata";
+import { getTeamPage } from "@/cms/team-page";
+import { metadataFromSeo } from "@/i18n/metadata";
 import { toLocale } from "@/i18n/params";
+import PageHeader from "../components/PageHeader";
 
 export async function generateMetadata({
   params,
@@ -12,18 +14,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale: rawLocale } = await params;
   const locale = toLocale(rawLocale);
-  const t = await getTranslations({ locale, namespace: "Metadata.team" });
+  const { seo } = await getTeamPage(locale);
 
-  return {
-    title: t("title"),
-    description: t("description"),
-    alternates: alternatesFor("/equipo", locale),
-    openGraph: {
-      title: t("ogTitle"),
-      description: t("ogDescription"),
-      url: `/${locale}/equipo`,
-    },
-  };
+  return metadataFromSeo(seo, "/equipo", locale);
 }
 
 export default async function TeamPage({
@@ -36,19 +29,14 @@ export default async function TeamPage({
   setRequestLocale(locale);
 
   const t = await getTranslations("Team");
-  const team = await getTeam(locale);
+  const [{ header }, team] = await Promise.all([
+    getTeamPage(locale),
+    getTeam(locale),
+  ]);
 
   return (
     <div>
-      <div className="mx-auto max-w-[1400px] px-8 pt-20 pb-15 lg:px-16">
-        <p className="mb-4 text-[13px] font-bold tracking-[2px] text-[#a9834f] uppercase">
-          {t("eyebrow")}
-        </p>
-        <h1 className="mb-3 font-[family-name:var(--font-cormorant)] text-[44px] font-medium">
-          {t("title")}
-        </h1>
-        <p className="max-w-[620px] text-base text-[#4a473f]">{t("intro")}</p>
-      </div>
+      <PageHeader header={header} className="pb-15" />
       <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-12 px-8 pb-30 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-8 lg:px-16">
         {team.map((m) => (
           <div key={m.id}>

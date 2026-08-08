@@ -1,27 +1,5 @@
 {
   "Metadata": {
-    "home": {
-      "title": "Aura — Bienes raíces de autor",
-      "description": "Un portafolio curado de residencias, villas y penthouses seleccionados con criterio, para quienes no negocian el buen gusto."
-    },
-    "properties": {
-      "title": "Propiedades",
-      "description": "Explora nuestro portafolio vigente de residencias, villas, penthouses y departamentos, filtrado por ubicación, tipo, precio y habitaciones.",
-      "ogTitle": "Propiedades — Aura",
-      "ogDescription": "Explora nuestro portafolio vigente de residencias, villas, penthouses y departamentos."
-    },
-    "team": {
-      "title": "Equipo",
-      "description": "Conoce al equipo de asesores de Aura: un grupo pequeño y especializado dedicado a acompañar cada transacción inmobiliaria con discreción y cercanía.",
-      "ogTitle": "Equipo — Aura",
-      "ogDescription": "Conoce al equipo de asesores de Aura."
-    },
-    "contact": {
-      "title": "Contáctanos",
-      "description": "Escríbenos y un asesor de Aura te contactará en menos de 24 horas. Oficina en Polanco, Ciudad de México.",
-      "ogTitle": "Contáctanos — Aura",
-      "ogDescription": "Escríbenos y un asesor de Aura te contactará en menos de 24 horas."
-    },
     "property": {
       "title": "{title} en {city}",
       "ogTitle": "{title} en {city} — Aura",
@@ -32,9 +10,6 @@
     "languageLabel": "Cambiar idioma"
   },
   "Properties": {
-    "eyebrow": "Portafolio",
-    "title": "Propiedades",
-    "intro": "Explora nuestra selección vigente, filtrada por ubicación, tipo, precio y habitaciones.",
     "cityAll": "Ubicación: todas",
     "typeAll": "Tipo: todos",
     "priceAll": "Precio: cualquiera",
@@ -73,15 +48,9 @@
     "penthouse": "Penthouse"
   },
   "Team": {
-    "eyebrow": "Quiénes somos",
-    "title": "Nuestro equipo",
-    "intro": "Un grupo pequeño y especializado de asesores dedicados a acompañar cada transacción con discreción y cercanía.",
     "photoAlt": "Foto de {name}, {role} en Aura"
   },
   "Contact": {
-    "eyebrow": "Escríbenos",
-    "title": "Contáctanos",
-    "intro": "Cuéntanos qué estás buscando y un asesor de Aura te contactará en menos de 24 horas.",
     "fallbackName": "gracias",
     "successTitle": "Gracias, {name}.",
     "successText": "Hemos recibido tu mensaje. Un asesor de Aura se pondrá en contacto contigo muy pronto.",
@@ -89,14 +58,6 @@
     "fieldEmail": "Correo",
     "fieldPhone": "Teléfono",
     "fieldMessage": "Mensaje",
-    "submit": "Enviar mensaje",
-    "mapAlt": "Mapa de ubicación de la oficina de Aura en Polanco, Ciudad de México",
-    "office": "Oficina",
-    "officeAddress": "Av. Presidente Masaryk 111",
-    "officeCity": "Polanco, Ciudad de México",
-    "directContact": "Contacto directo",
-    "hours": "Horario de atención",
-    "hoursWeekdays": "Lunes a viernes · 9:00 – 19:00",
-    "hoursSaturday": "Sábado · 10:00 – 14:00"
+    "submit": "Enviar mensaje"
   }
 }

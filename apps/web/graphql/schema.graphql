@@ -238,6 +238,22 @@ type ComponentSharedSocialLink {
   href: String!
 }
 
+input ComponentSharedSeoInput {
+  id: ID
+  title: String
+  description: String
+  ogTitle: String
+  ogDescription: String
+}
+
+type ComponentSharedSeo {
+  id: ID!
+  title: String!
+  description: String!
+  ogTitle: String
+  ogDescription: String
+}
+
 input ComponentSharedLinkFiltersInput {
   label: StringFilterInput
   href: StringFilterInput
@@ -327,6 +343,40 @@ type ComponentSectionsPhilosophy {
   link: ComponentSharedLink
   image: UploadFile
   imageAlt: String
+}
+
+input ComponentSectionsPageHeaderInput {
+  id: ID
+  eyebrow: String
+  title: String
+  intro: String
+}
+
+type ComponentSectionsPageHeader {
+  id: ID!
+  eyebrow: String
+  title: String!
+  intro: String
+}
+
+input ComponentSectionsInfoBlockFiltersInput {
+  title: StringFilterInput
+  body: StringFilterInput
+  and: [ComponentSectionsInfoBlockFiltersInput]
+  or: [ComponentSectionsInfoBlockFiltersInput]
+  not: ComponentSectionsInfoBlockFiltersInput
+}
+
+input ComponentSectionsInfoBlockInput {
+  id: ID
+  title: String
+  body: String
+}
+
+type ComponentSectionsInfoBlock {
+  id: ID!
+  title: String!
+  body: String!
 }
 
 input ComponentSectionsHeroInput {
@@ -770,6 +820,34 @@ type AgentRelationResponseCollection {
   nodes: [Agent!]!
 }
 
+input ContactPageInput {
+  seo: ComponentSharedSeoInput
+  header: ComponentSectionsPageHeaderInput
+  infoBlocks: [ComponentSectionsInfoBlockInput]
+  map: ID
+  mapAlt: String
+  publishedAt: DateTime
+}
+
+type ContactPage {
+  documentId: ID!
+  seo: ComponentSharedSeo!
+  header: ComponentSectionsPageHeader!
+  infoBlocks(filters: ComponentSectionsInfoBlockFiltersInput, pagination: PaginationArg = {  }, sort: [String] = []): [ComponentSectionsInfoBlock]
+  map: UploadFile
+  mapAlt: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  publishedAt: DateTime
+  locale: String
+  localizations_connection: ContactPageRelationResponseCollection
+  localizations: [ContactPage]!
+}
+
+type ContactPageRelationResponseCollection {
+  nodes: [ContactPage!]!
+}
+
 input GlobalInput {
   siteName: String
   logo: ID
@@ -797,6 +875,7 @@ type GlobalRelationResponseCollection {
 }
 
 input HomePageInput {
+  seo: ComponentSharedSeoInput
   hero: ComponentSectionsHeroInput
   philosophy: ComponentSectionsPhilosophyInput
   stats: [ComponentSectionsStatInput]
@@ -808,6 +887,7 @@ input HomePageInput {
 
 type HomePage {
   documentId: ID!
+  seo: ComponentSharedSeo!
   hero: ComponentSectionsHero!
   philosophy: ComponentSectionsPhilosophy
   stats(filters: ComponentSectionsStatFiltersInput, pagination: PaginationArg = {  }, sort: [String] = []): [ComponentSectionsStat]
@@ -825,6 +905,28 @@ type HomePage {
 
 type HomePageRelationResponseCollection {
   nodes: [HomePage!]!
+}
+
+input PropertiesPageInput {
+  seo: ComponentSharedSeoInput
+  header: ComponentSectionsPageHeaderInput
+  publishedAt: DateTime
+}
+
+type PropertiesPage {
+  documentId: ID!
+  seo: ComponentSharedSeo!
+  header: ComponentSectionsPageHeader!
+  createdAt: DateTime
+  updatedAt: DateTime
+  publishedAt: DateTime
+  locale: String
+  localizations_connection: PropertiesPageRelationResponseCollection
+  localizations: [PropertiesPage]!
+}
+
+type PropertiesPageRelationResponseCollection {
+  nodes: [PropertiesPage!]!
 }
 
 enum ENUM_PROPERTY_TYPE {
@@ -905,7 +1007,29 @@ type PropertyRelationResponseCollection {
   nodes: [Property!]!
 }
 
-union GenericMorph = ComponentSharedSocialLink | ComponentSharedLink | ComponentSharedAmenity | ComponentSectionsStat | ComponentSectionsSectionHeading | ComponentSectionsPhilosophy | ComponentSectionsHero | ComponentSectionsCta | ComponentLayoutNavigation | ComponentLayoutNavItem | ComponentLayoutFooter | ComponentLayoutFooterColumn | UploadFile | I18NLocale | ReviewWorkflowsWorkflow | ReviewWorkflowsWorkflowStage | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser | Agent | Global | HomePage | Property
+input TeamPageInput {
+  seo: ComponentSharedSeoInput
+  header: ComponentSectionsPageHeaderInput
+  publishedAt: DateTime
+}
+
+type TeamPage {
+  documentId: ID!
+  seo: ComponentSharedSeo!
+  header: ComponentSectionsPageHeader!
+  createdAt: DateTime
+  updatedAt: DateTime
+  publishedAt: DateTime
+  locale: String
+  localizations_connection: TeamPageRelationResponseCollection
+  localizations: [TeamPage]!
+}
+
+type TeamPageRelationResponseCollection {
+  nodes: [TeamPage!]!
+}
+
+union GenericMorph = ComponentSharedSocialLink | ComponentSharedSeo | ComponentSharedLink | ComponentSharedAmenity | ComponentSectionsStat | ComponentSectionsSectionHeading | ComponentSectionsPhilosophy | ComponentSectionsPageHeader | ComponentSectionsInfoBlock | ComponentSectionsHero | ComponentSectionsCta | ComponentLayoutNavigation | ComponentLayoutNavItem | ComponentLayoutFooter | ComponentLayoutFooterColumn | UploadFile | I18NLocale | ReviewWorkflowsWorkflow | ReviewWorkflowsWorkflowStage | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser | Agent | ContactPage | Global | HomePage | PropertiesPage | Property | TeamPage
 
 input FileInfoInput {
   name: String
@@ -1023,6 +1147,14 @@ type Query {
     """The locale to use for the query"""
     locale: I18NLocaleCode
   ): [Agent]!
+  contactPage(
+    status: PublicationStatus = PUBLISHED
+    hasPublishedVersion: Boolean
+    publicationFilter: PublicationFilter
+
+    """The locale to use for the query"""
+    locale: I18NLocaleCode
+  ): ContactPage
   global(
     status: PublicationStatus = PUBLISHED
     hasPublishedVersion: Boolean
@@ -1039,6 +1171,14 @@ type Query {
     """The locale to use for the query"""
     locale: I18NLocaleCode
   ): HomePage
+  propertiesPage(
+    status: PublicationStatus = PUBLISHED
+    hasPublishedVersion: Boolean
+    publicationFilter: PublicationFilter
+
+    """The locale to use for the query"""
+    locale: I18NLocaleCode
+  ): PropertiesPage
   property(
     documentId: ID!
     status: PublicationStatus = PUBLISHED
@@ -1070,6 +1210,14 @@ type Query {
     """The locale to use for the query"""
     locale: I18NLocaleCode
   ): [Property]!
+  teamPage(
+    status: PublicationStatus = PUBLISHED
+    hasPublishedVersion: Boolean
+    publicationFilter: PublicationFilter
+
+    """The locale to use for the query"""
+    locale: I18NLocaleCode
+  ): TeamPage
   me: UsersPermissionsMe
 }
 
@@ -1101,6 +1249,17 @@ type Mutation {
     """The locale to use for the query"""
     locale: I18NLocaleCode
   ): DeleteMutationResponse
+  updateContactPage(
+    status: PublicationStatus = PUBLISHED
+    data: ContactPageInput!
+
+    """The locale to use for the query"""
+    locale: I18NLocaleCode
+  ): ContactPage
+  deleteContactPage(
+    """The locale to use for the query"""
+    locale: I18NLocaleCode
+  ): DeleteMutationResponse
   updateGlobal(
     status: PublicationStatus = PUBLISHED
     data: GlobalInput!
@@ -1123,6 +1282,17 @@ type Mutation {
     """The locale to use for the query"""
     locale: I18NLocaleCode
   ): DeleteMutationResponse
+  updatePropertiesPage(
+    status: PublicationStatus = PUBLISHED
+    data: PropertiesPageInput!
+
+    """The locale to use for the query"""
+    locale: I18NLocaleCode
+  ): PropertiesPage
+  deletePropertiesPage(
+    """The locale to use for the query"""
+    locale: I18NLocaleCode
+  ): DeleteMutationResponse
   createProperty(
     status: PublicationStatus = PUBLISHED
     data: PropertyInput!
@@ -1141,6 +1311,17 @@ type Mutation {
   deleteProperty(
     documentId: ID!
 
+    """The locale to use for the query"""
+    locale: I18NLocaleCode
+  ): DeleteMutationResponse
+  updateTeamPage(
+    status: PublicationStatus = PUBLISHED
+    data: TeamPageInput!
+
+    """The locale to use for the query"""
+    locale: I18NLocaleCode
+  ): TeamPage
+  deleteTeamPage(
     """The locale to use for the query"""
     locale: I18NLocaleCode
   ): DeleteMutationResponse

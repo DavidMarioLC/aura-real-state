@@ -31,3 +31,32 @@ export function alternatesFor(
     },
   };
 }
+
+/**
+ * Turns a page's CMS `seo` block into the metadata every page repeats:
+ * title/description, canonical + hreflang, and the Open Graph pair pointing at
+ * the localized URL. Takes the plain shape rather than importing from `cms/`
+ * so this module keeps knowing nothing about the CMS. Spread the result to
+ * override a field — `/propiedades` adds a title template for its children.
+ */
+export function metadataFromSeo(
+  seo: {
+    title: string;
+    description: string;
+    ogTitle: string;
+    ogDescription: string;
+  },
+  pathname: string,
+  locale: Locale,
+): Metadata {
+  return {
+    title: seo.title,
+    description: seo.description,
+    alternates: alternatesFor(pathname, locale),
+    openGraph: {
+      title: seo.ogTitle,
+      description: seo.ogDescription,
+      url: getPathname({ href: pathname, locale }),
+    },
+  };
+}

@@ -2,7 +2,14 @@ import { graphql } from "@/graphql";
 import { strapi } from "@/graphql/client";
 import type { Locale } from "@/i18n/routing";
 import { type PropertySummary, toSummary } from "./properties";
-import { type CmsImage, type CmsLink, compact, toImage } from "./types";
+import {
+  type CmsImage,
+  type CmsLink,
+  type CmsSeo,
+  compact,
+  toImage,
+  toSeo,
+} from "./types";
 
 /**
  * The home page single type. Every section is localized; `hero` is the only
@@ -15,6 +22,12 @@ import { type CmsImage, type CmsLink, compact, toImage } from "./types";
 const HomePageQuery = graphql(`
   query HomePage($locale: I18NLocaleCode!) {
     homePage(locale: $locale) {
+      seo {
+        title
+        description
+        ogTitle
+        ogDescription
+      }
       hero {
         eyebrow
         title
@@ -102,6 +115,7 @@ type Philosophy = {
 };
 
 export type HomeContent = {
+  seo: CmsSeo;
   hero: Hero;
   philosophy: Philosophy | null;
   stats: { value: string; label: string }[];
@@ -126,7 +140,7 @@ export async function getHomeContent(locale: Locale): Promise<HomeContent> {
 
   // Same rule as the site chrome: a locale without a published entry would
   // render an empty home page, so fail the build instead.
-  if (!homePage?.hero) {
+  if (!homePage?.hero || !homePage.seo) {
     throw new Error(
       `Strapi has no published "Home Page" entry with a hero for locale "${locale}".`,
     );
@@ -135,6 +149,7 @@ export async function getHomeContent(locale: Locale): Promise<HomeContent> {
   const { hero, philosophy, featuredHeading, cta } = homePage;
 
   return {
+    seo: toSeo(homePage.seo),
     hero: {
       eyebrow: hero.eyebrow ?? null,
       title: hero.title,
